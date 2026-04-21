@@ -1,0 +1,1563 @@
+algoleap
+Knowledge Hub — Developer Guide
+A Beginner-Friendly Build Guide for Fresh Developers
+Version 1.0  ·  April 2026  ·  Internal Use Only
+Mockup
+: 
+https://claude.ai/public/artifacts/2ab6ca43-9ab9-48e0-b171-968fb18c08e8
+How to use this document
+Read each section in order — later sections build on earlier ones
+Every "What This Means" box explains a concept in plain English
+Every "Expected Result" box tells you what you should see on screen after completing a step
+Every "Watch Out" box highlights a common mistake to avoid
+Code blocks show exact commands or code to type — copy them precisely
+If something does not work, re-read the "Watch Out" box for that section first
+Section 1: What Are We Building and Why
+1.1 The Problem We Are Solving
+Algoleap has around 30 to 50 important files — pitch decks, demo videos, case studies, architecture documents, and templates. These files currently live in OneDrive (Microsoft's cloud storage), but there is no organised way for employees to find them. If a sales person needs a case study about supply chain AI, they have to ask a colleague or search through folders manually. This wastes time.
+1.2 The Solution We Are Building
+We are building an internal website (a web portal) that acts like a smart, searchable 
+catalog
+ of all those files. Think of it like a library index card system — except it is on the web, it has a search bar, and it shows you exactly where to find each document.
+CONCEPT  What This Means
+A web portal is just a website that is private — only certain people (in this case, Algoleap employees) can log in and use it.
+The portal does NOT store the actual files. It only stores information ABOUT each file (title, description, type, etc.) and a link to where the file lives in OneDrive.
+Think of it as a menu at a restaurant. The menu does not contain the food — it just tells you what is available and how to get it.
+1.3 Who Will Use This Portal
+User
+What They Need the Portal For
+Sales & BD Team
+Finding pitch decks and case studies to use in client meetings
+Delivery / Engineering Teams
+Finding architecture docs, templates, and reusable technical assets
+Leadership
+Finding company credentials, capability decks, and engagement summaries
+HR & People Team
+Finding onboarding materials, training docs, and process guides
+Knowledge Management Owner
+Adding new artifacts, editing existing ones, archiving old ones
+1.4 What the Portal Will Look Like (Features)
+Here is a plain-English list of every feature we will build:
+A login page — employees sign in with their Algoleap Google account
+A sidebar — with filters to narrow down artifacts by type, service line, audience, and status
+A search bar — type any keyword to instantly find matching artifacts
+Artifact cards — each file is shown as a card with its title, description, type badge, tags, and an 'Open' button that opens the OneDrive link
+A stats bar — shows total artifacts, how many are current, how many need review
+Grid and list view toggle — switch between card grid layout and a compact list layout
+An artifact detail panel — click any card to see its full metadata in a slide-out panel
+An admin panel — for the knowledge management owner to add, edit, and archive artifacts
+1.5 What We Are NOT Building (Important Boundaries)
+CAUTION  Watch Out
+We are NOT building a file storage system. Files stay in OneDrive. We only store links.
+We are NOT building a document editor. Employees open files in OneDrive to edit them.
+We are NOT building an AI chatbot in this phase. That is planned for a future phase.
+We are NOT building a public-facing website. Only @algoleap.com email accounts can log in.
+Section 2: Your Tools — What Each One Does
+Before you write a single line of code, you need to understand every tool in your toolkit. This section explains each tool in plain English. Do not skip this — understanding WHY you are using a tool will help you debug problems faster.
+2.1 Next.js — The Main Framework
+CONCEPT  What This Means
+Next.js is a framework built on top of React (a popular JavaScript library for building user interfaces).
+Think of React as the engine of a car, and Next.js as the full car — it adds routing (how pages are linked), server-side rendering (preparing pages on the server before sending to the browser), and many other helpful features.
+We use Next.js because it works perfectly with 
+Vercel
+ (where we deploy) and handles many complex things automatically.
+What you will use it for: Building every page of the portal — the login page, the 
+catalog
+ page, the admin page, and all the UI components (cards, sidebar, search bar, etc.).
+2.2 Tailwind CSS — Styling the UI
+CONCEPT  What This Means
+CSS is the language that controls how a website looks (
+colors
+, fonts, spacing, layout).
+Tailwind CSS is a toolkit of pre-written CSS classes. Instead of writing custom CSS, you add short class names directly to your HTML elements.
+For example: <div class="bg-green-900 text-white p-4"> applies a dark green background, white text, and padding — all without writing a single line of custom CSS.
+This makes styling fast and consistent across the entire portal.
+What you will use it for: All visual styling — 
+colors
+, fonts, spacing, card layouts, responsive design (mobile vs desktop).
+2.3 
+Supabase
+ — Your Database and Login System
+CONCEPT  What This Means
+A database is a place to store and retrieve structured data. In our case, we will store the details of every artifact (title, description, OneDrive link, tags, etc.).
+Supabase
+ gives us a PostgreSQL database (a very popular and reliable type of database), a built-in authentication system (handles logins securely), and a JavaScript SDK (a set of pre-written functions to interact with the database from your code).
+Think of 
+Supabase
+ as a combination of a filing cabinet (database) and a security guard (authentication) — all provided as a free cloud service.
+You do not need to set up your own server. 
+Supabase
+ handles all of that.
+What you will use it for: Storing all artifact records, managing user logins, and enforcing security rules (e.g., only admins can add new artifacts).
+2.4 Google OAuth — The Login Method
+CONCEPT  What This Means
+OAuth is a secure way to let users log in using an existing account (like Google) instead of creating a new username and password.
+We use Google OAuth so that Algoleap employees can simply click 'Sign in with Google' and use their existing @algoleap.com Google account.
+We configure it to ONLY allow @algoleap.com email addresses — anyone trying to log in with a personal Gmail account will be blocked.
+You do not build the login system from scratch. Google handles the actual authentication. 
+Supabase
+ connects to Google on your behalf.
+What you will use it for: The login page. One button, secure login, zero password management.
+2.5 
+Vercel
+ — Hosting the Website
+CONCEPT  What This Means
+Hosting means making your website accessible on the internet. When you build a website on your laptop, only you can see it. 
+Vercel
+ puts it on the internet so everyone at Algoleap can access it.
+Vercel
+ is the company behind Next.js, so the two work perfectly together.
+Every time you push code to GitHub (a code storage platform), 
+Vercel
+ automatically rebuilds and republishes your website. This means deploying a change is as simple as saving your code.
+Vercel
+ has a generous free tier that is more than sufficient for 50 artifacts and a few dozen users.
+What you will use it for: Making the portal available at a real URL (e.g., hub.algoleap.com) that every employee can open in their browser.
+2.6 GitHub — Saving and Sharing Your Code
+CONCEPT  What This Means
+GitHub is a platform for storing code online, tracking every change you make, and collaborating with others.
+Every time you save a batch of changes, you make a 'commit'. Every commit is saved permanently — you can always go back to a previous version if something breaks.
+Vercel
+ watches your GitHub repository and automatically deploys every time you push new code to the 'main' branch.
+What you will use it for: Storing all your code online, and triggering automatic deployments to 
+Vercel
+.
+2.7 React Hook Form + Zod — Building Safe Admin Forms
+CONCEPT  What This Means
+React Hook Form is a library that makes it easy to build forms in React — things like the 'Add Artifact' form in the admin panel.
+Zod is a library that validates data. For example, it makes sure the OneDrive URL field actually contains a URL, and that required fields are not left empty.
+Together they ensure that the knowledge management owner cannot accidentally submit an artifact with missing or incorrect data.
+What you will use it for: The artifact intake form and the edit form in the admin panel.
+2.8 
+Lucide
+ React — Icons
+CONCEPT  What This Means
+Lucide
+ React is a library of clean, consistent icons (small SVG images used as visual indicators in the UI — search icon, filter icon, external link icon, etc.).
+We import only the icons we need, keeping the app fast.
+What you will use it for: All icons throughout the portal — search, filter, open link, settings, user avatar, etc.
+2.9 The Full Stack at a Glance
+Tool
+What it does in one sentence
+Free?
+Next.js
+The framework that runs the whole web application
+Yes
+Tailwind CSS
+Makes the UI look good without writing custom CSS
+Yes
+Supabase
+Stores all artifact data and handles secure user logins
+Yes (free tier)
+Google OAuth
+Lets
+ employees log in with their Algoleap Google account
+Yes
+Vercel
+Hosts the website online and auto-deploys on every code push
+Yes (free tier)
+GitHub
+Stores your code and triggers deployments
+Yes (free tier)
+React Hook Form + Zod
+Builds and validates the admin forms safely
+Yes
+Lucide
+ React
+Provides clean icons throughout the UI
+Yes
+Section 3: Setting Up Your Computer Before You Code
+Before writing any code, you need to install some tools on your computer. Complete these steps in order. Do not skip any.
+3.1 Install Node.js
+Node.js lets you run JavaScript on your computer (not just in a browser). Next.js requires it.
+Step 1:  Download and Install Node.js
+Go to: https://nodejs.org
+Download the version labelled 'LTS' (Long Term Support) — this is the stable version.
+Run the installer. Accept all default settings.
+When finished, open a Terminal (Mac/Linux) or Command Prompt (Windows).
+Type:   node --version   and press Enter.
+You should see a version number like 'v20.x.x'. This confirms Node.js is installed.
+CHECK  Expected Result
+You run 'node --version' and see a version number (e.g. v20.11.0). No error messages.
+3.4 Create a 
+Supabase
+ Account and Project
+Step 4:  Set Up 
+Supabase
+Go to: https://supabase.com and sign up for a free account.
+Click 'New Project'.
+Choose an organisation (create one called 'Algoleap' if prompted).
+Name the project: algoleap-knowledge-hub
+Set a strong database password — save this somewhere safe (e.g. a password manager).
+Select the region closest to your users (e.g. Singapore for India-based team).
+Click 'Create new project'. It takes about 2 minutes to set up.
+Once ready, go to: Settings > API. You will see your Project URL and anon key. KEEP THIS PAGE OPEN — you will need these values shortly.
+CHECK  Expected Result
+Your 
+Supabase
+ project dashboard is open. You can see 'Database', 'Authentication', 'Storage' sections in the left sidebar.
+3.5 Create a 
+Vercel
+ Account
+Step 5:  Set Up 
+Vercel
+Go to: https://vercel.com and sign up.
+Choose 'Continue with GitHub' — this links 
+Vercel
+ to your GitHub account automatically.
+You will use 
+Vercel
+ later when you are ready to deploy. For now, just having the account is enough.
+CHECK  Expected Result
+You are logged into 
+Vercel
+ and can see your (empty) dashboard.
+Section 4: Creating the Next.js Project
+4.1 Create the Project Folder
+Open your Terminal (Mac/Linux) or Command Prompt (Windows). Navigate to the folder where you want to create the project (e.g., your Documents folder), then run the following command exactly as written:
+npx
+ 
+create-next-app@latest
+ algoleap-knowledge-hub --typescript --tailwind --app
+CONCEPT  What This Means
+npx
+ is a tool that comes with Node.js. It runs a package without installing it globally.
+create-next-app is the official tool to set up a new Next.js project.
+--typescript means we use TypeScript (a version of JavaScript that catches type errors before you run the code).
+--tailwind automatically sets up Tailwind CSS for us.
+--app means we use the 'App Router' — the modern way to structure Next.js applications.
+The installer will ask you a few questions. Answer them as follows:
+Would you like to use 
+ESLint
+? Yes
+Would you like to use 
+src
+/ directory? No
+Would you like to customize the default import alias? No
+CHECK  Expected Result
+A new folder called 'algoleap-knowledge-hub' is created.
+Inside it you can see folders like: app/, public/, and files like 
+package.json
+, 
+tailwind.config.ts
+.
+The installer prints: 'Success! Created algoleap-knowledge-hub'
+4.2 Install Extra Dependencies
+Now open the project in VS Code. In the terminal (inside VS Code, you can open one via Terminal > New Terminal), run:
+npm
+ install @supabase/supabase-js @supabase/auth-helpers-nextjs
+npm
+ install 
+lucide
+-react react-hook-form @hookform/resolvers 
+zod
+CONCEPT  What This Means
+npm
+ install downloads and adds libraries to your project.
+@supabase/supabase-js is the 
+Supabase
+ JavaScript library — it lets your code talk to your 
+Supabase
+ database.
+@supabase/auth-helpers-nextjs helps 
+Supabase
+ authentication work correctly inside Next.js.
+lucide
+-react provides icons.
+react-hook-form and 
+zod
+ handle the admin forms safely.
+CHECK  Expected Result
+The terminal shows no errors. A '
+node_modules
+' folder now exists inside your project.
+4.3 Create Your Environment Variables File
+Environment variables are secret configuration values (like API keys and URLs) that your app needs to run. They are kept in a special file that is NEVER uploaded to GitHub.
+CAUTION  Watch Out
+NEVER push the .
+env.local
+ file to GitHub. It contains secret keys. The .
+gitignore
+ file (created automatically by create-next-app) already excludes it, but always double-check.
+In the root of your project, create a file called exactly: .
+env.local
+Add the following content, replacing the placeholder values with your real values from 
+Supabase
+:
+NEXT_PUBLIC_SUPABASE_URL=https://YOUR_PROJECT_ID.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=YOUR_ANON_KEY_FROM_SUPABASE
+SUPABASE_SERVICE_ROLE_KEY=YOUR_SERVICE_ROLE_KEY_FROM_SUPABASE
+NEXT_PUBLIC_APP_URL=http://localhost:3000
+TIP  Helpful Tip
+Find NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY in 
+Supabase
+ > Settings > API > Project URL and Project API Keys (anon public).
+Find SUPABASE_SERVICE_ROLE_KEY in the same page under '
+service_role
+' — this is a secret key used only on the server side, never in browser code.
+NEXT_PUBLIC_ prefix means the variable is safe to use in the browser. Variables WITHOUT this prefix are server-only and more secure.
+4.4 Verify the App Runs
+In your terminal, run:
+npm
+ run dev
+CHECK  Expected Result
+The terminal shows: 'Ready - started server on http://localhost:3000'
+Open your browser and go to http://localhost:3000
+You should see the default Next.js welcome page. This confirms everything is set up correctly.
+Press 
+Ctrl+C
+ in the terminal to stop the server when you are done.
+Section 5: Setting Up the Database in 
+Supabase
+A database stores structured data in tables — similar to spreadsheet tables with rows and columns. We need two tables: one for artifacts (the main 
+catalog
+) and one for user profiles (to track who is an admin).
+CONCEPT  What This Means
+SQL (Structured Query Language) is the language used to create and manage database tables. You do not need to deeply understand it yet — just run the commands provided.
+In 
+Supabase
+, you run SQL commands in the 'SQL Editor' — it is like a text editor for your database.
+A 'table' is like a spreadsheet tab. Each 'row' is one record (one artifact). Each 'column' is one field (title, type, URL, etc.).
+5.1 Open the 
+Supabase
+ SQL Editor
+Log in to supabase.com and open your project
+In the left sidebar, click 'SQL Editor'
+Click 'New Query' — a blank text area appears where you can type SQL
+5.2 Create the Artifacts Table
+This is the main table that stores all artifact records. Copy the entire block below, paste it into the SQL Editor, and click 'Run'.
+CREATE TABLE artifacts (
+  id             UUID DEFAULT 
+gen_random_uuid
+() PRIMARY KEY,
+  title          TEXT NOT NULL,
+  description    TEXT,
+  
+artifact_type
+  TEXT NOT NULL,
+  
+service_line
+   TEXT[],
+  industry       TEXT[],
+  audience       TEXT[],
+  
+tech_tags
+      TEXT[],
+  
+onedrive_url
+   TEXT NOT NULL,
+  
+owner_name
+     TEXT,
+  
+owner_email
+    TEXT,
+  status         TEXT DEFAULT 'current',
+  
+is_client_safe
+ BOOLEAN DEFAULT FALSE,
+  
+created_at
+     TIMESTAMPTZ DEFAULT NOW(),
+  
+updated_at
+     TIMESTAMPTZ DEFAULT NOW()
+);
+CONCEPT  What This Means
+UUID is a unique identifier — it automatically generates a random ID for each artifact row.
+TEXT is a text field. TEXT[] means an array of text — used for fields like '
+service_line
+' where one artifact might belong to multiple lines.
+NOT NULL means this field is required — you cannot add an artifact without it.
+DEFAULT NOW() automatically fills in the current date and time when a row is created.
+BOOLEAN is a true/false field — used here to mark if an artifact is safe to share with clients.
+CHECK  Expected Result
+The SQL Editor shows 'Success. No rows returned' — this means the table was created successfully. You can verify by clicking 'Table Editor' in the left sidebar and seeing 'artifacts' listed.
+5.3 Create the User Profiles Table
+This table tracks each user's role (viewer or admin). Run this in a new query:
+CREATE TABLE profiles (
+  id     UUID REFERENCES 
+auth.users
+(id) ON DELETE CASCADE PRIMARY KEY,
+  email  TEXT,
+  role   TEXT DEFAULT 'viewer'
+);
+CONCEPT  What This Means
+REFERENCES 
+auth.users
+(id) links this table to 
+Supabase's
+ built-in users table — every profile belongs to a real user account.
+ON DELETE CASCADE means if a user is deleted, their profile is also automatically deleted.
+The 'role' field has only two meaningful values: 'viewer' (regular employee) and 'admin' (knowledge management owner).
+5.4 Create the Auto-Profile Trigger
+This trigger automatically creates a profile row every time a new user signs in for the first time. Run this as a new query:
+CREATE OR REPLACE FUNCTION 
+public.handle_new_user
+()
+RETURNS TRIGGER AS $$
+BEGIN
+  INSERT INTO 
+public.profiles
+ (id, email)
+  VALUES (NEW.id, 
+NEW.email
+);
+  RETURN NEW;
+END;
+$$ LANGUAGE 
+plpgsql
+ SECURITY DEFINER;
+CREATE TRIGGER 
+on_auth_user_created
+  AFTER INSERT ON 
+auth.users
+  FOR EACH ROW EXECUTE PROCEDURE 
+public.handle_new_user
+();
+CONCEPT  What This Means
+A trigger is a database function that runs automatically when something happens.
+This trigger listens for new user sign-ins and automatically adds them to the profiles table with role = 'viewer'.
+You will then manually update the KM owner's role to 'admin' in the Table Editor.
+5.5 Set Up Row Level Security (RLS) Policies
+Row Level Security controls who can read or modify which rows. This is what keeps the portal secure. Run these as a single query:
+-- Enable RLS on both tables
+ALTER TABLE artifacts ENABLE ROW LEVEL SECURITY;
+ALTER TABLE profiles  ENABLE ROW LEVEL SECURITY;
+-- All logged-in users can READ artifacts
+CREATE POLICY 
+artifacts_read
+ ON artifacts
+  FOR SELECT TO authenticated USING (true);
+-- Only admins can INSERT, UPDATE, DELETE artifacts
+CREATE POLICY 
+artifacts_write
+ ON artifacts
+  FOR ALL TO authenticated
+  USING (EXISTS (
+    SELECT 1 FROM profiles
+    WHERE id = 
+auth.uid
+() AND role = 'admin'
+  ));
+-- Users can only read their own profile
+CREATE POLICY 
+profiles_read
+ ON profiles
+  FOR SELECT TO authenticated USING (id = 
+auth.uid
+());
+CONCEPT  What This Means
+RLS ensures that even if someone gets a database key, they can only do what their role allows.
+auth.uid
+() is a 
+Supabase
+ function that returns the ID of the currently logged-in user.
+The admin write policy checks: 'Does the current user have role = admin in the profiles table?' If yes, allow the action.
+CHECK  Expected Result
+All four SQL blocks run without errors. RLS is now enabled — only authenticated users can see artifacts, and only admins can modify them.
+Section 6: Setting Up Login with Google
+6.1 Create a Google OAuth Application
+To allow login with Google, you need to register your application with Google. This is free.
+Go to: https://console.cloud.google.com
+Create a new project (call it 'Algoleap Knowledge Hub')
+In the left menu, go to: APIs & Services > OAuth Consent Screen
+Choose 'Internal' (only Algoleap accounts will be able to use this)
+Fill in App Name: 'Algoleap Knowledge Hub', and your Algoleap email as support email
+Save and continue through the remaining screens (you can leave most fields blank)
+Now go to: APIs & Services > Credentials
+Click 'Create Credentials' > 'OAuth Client ID'
+Choose 'Web Application' as the application type
+Under 'Authorised redirect URIs', add: https://YOUR_SUPABASE_PROJECT_ID.supabase.co/auth/v1/callback
+Click Create. You will see a Client ID and Client Secret. Copy both values — you will need them next.
+TIP  Helpful Tip
+Find your 
+Supabase
+ project ID in: 
+Supabase
+ Dashboard > Settings > General. It looks like: 
+abcdefghijklmnop
+The redirect URI tells Google where to send users after they log in. It must match exactly.
+6.2 Connect Google OAuth to 
+Supabase
+In 
+Supabase
+, go to: Authentication > Providers
+Find 'Google' in the list and click to expand it
+Toggle it to 'Enabled'
+Paste in your Google Client ID and Client Secret from the previous step
+Click Save
+CHECK  Expected Result
+Google OAuth is now enabled in 
+Supabase
+. The toggle is green and shows as 'Enabled'.
+6.3 Restrict Login to @algoleap.com Emails Only
+We need to block anyone who tries to log in with a non-Algoleap email. We do this using a 
+Supabase
+ Auth Hook — a small function that runs every time someone tries to sign in.
+In 
+Supabase
+, go to: Authentication > Hooks
+Click 'Add Hook' next to 'Custom Access Token'
+Add the following as a PostgreSQL function:
+CREATE OR REPLACE FUNCTION 
+public.restrict_to_algoleap
+(event 
+jsonb
+)
+RETURNS 
+jsonb
+ LANGUAGE 
+plpgsql
+ AS $$
+BEGIN
+  IF (event->>'email') NOT LIKE '%@algoleap.com' THEN
+    RAISE EXCEPTION 'Only @algoleap.com accounts are allowed.';
+  END IF;
+  RETURN event;
+END;
+$$;
+CAUTION  Watch Out
+Without this step, anyone with a Google account could potentially sign into your portal if they found the URL.
+This is a critical security step — do not skip it.
+6.4 Create the 
+Supabase
+ Client Files in Your Code
+Now we connect your Next.js code to 
+Supabase
+. Create these two files:
+File 1: lib/
+supabase
+/
+client.ts
+ (used in the browser)
+import { 
+createClientComponentClient
+ } from '@
+supabase
+/auth-helpers-
+nextjs
+'
+export 
+const
+ 
+supabase
+ = 
+createClientComponentClient
+()
+File 2: lib/
+supabase
+/
+server.ts
+ (used on the server)
+import { 
+createServerComponentClient
+ } from '@
+supabase
+/auth-helpers-
+nextjs
+'
+import { cookies } from 'next/headers'
+export 
+const
+ 
+createServerSupabase
+ = () =>
+  
+createServerComponentClient
+({ cookies })
+CONCEPT  What This Means
+In Next.js, some code runs on the server (before the page is sent to the browser) and some runs in the browser.
+We need two separate 
+Supabase
+ clients because the browser and server handle authentication sessions differently.
+The 'client' version is used inside React components that have interactivity (clicking, typing).
+The 'server' version is used inside page files that fetch data when the page first loads.
+6.5 Protect All Pages with Middleware
+Create a file called 
+middleware.ts
+ in the ROOT of your project (not inside app/ or lib/, but at the same level as 
+package.json
+). This file runs before every page loads and checks if the user is logged in. If not, it sends them to the login page.
+import { 
+createMiddlewareClient
+ } from '@
+supabase
+/auth-helpers-
+nextjs
+'
+import { 
+NextResponse
+ } from 'next/server'
+import type { 
+NextRequest
+ } from 'next/server'
+export async function middleware(
+req
+: 
+NextRequest
+) {
+  
+const
+ res  = 
+NextResponse.next
+()
+  
+const
+ 
+supabase
+ = 
+createMiddlewareClient
+({ 
+req
+, res })
+  
+const
+ { data: { session } } = await 
+supabase.auth.getSession
+()
+  // If not logged in, redirect to login page
+  if (!session) {
+    return 
+NextResponse.redirect
+(new URL('/login', req.url))
+  }
+  return res
+}
+// Apply this check to all pages EXCEPT /login and /auth
+export 
+const
+ config = {
+  matcher: ['/((?!
+login|auth
+|_
+next|favicon
+).*)']
+}
+CHECK  Expected Result
+If you restart the dev server and go to http://localhost:3000, you should be redirected to /login (which doesn't exist yet — that is okay for now, you will build it next).
+Section 7: Defining Data Types and Constants
+Before building UI components, define the shape of your data. This helps TypeScript catch errors and makes your code self-documenting.
+7.1 Create lib/
+types.ts
+This file defines what an 'Artifact' object looks like in your code:
+export type 
+ArtifactStatus
+ = 'current' | 'needs-update' | 'archived'
+export interface Artifact {
+  id:             string
+  title:          string
+  description:    string | null
+  
+artifact_type
+:  string
+  
+service_line
+:   string[]
+  industry:       string[]
+  audience:       string[]
+  
+tech_tags
+:      string[]
+  
+onedrive_url
+:   string
+  
+owner_name
+:     string | null
+  
+owner_email
+:    string | null
+  status:         
+ArtifactStatus
+  
+is_client_safe
+: 
+boolean
+  
+created_at
+:     string
+  
+updated_at
+:     string
+}
+export interface Profile {
+  id:    string
+  email: string
+  role:  'viewer' | 'admin'
+}
+CONCEPT  What This Means
+An 'interface' in TypeScript describes the shape of an object — what fields it has and what type each field is.
+string[] means 'an array of strings' — used for fields like 
+service_line
+ where one artifact can belong to multiple categories.
+string | null means the field can be either a text value or null (empty/not filled in).
+By defining these types, TypeScript will warn you immediately if you try to use a field that doesn't exist, or pass the wrong type of data.
+7.2 Create lib/
+constants.ts
+This file defines all the allowed values for dropdown fields. Keeping them in one place means you update them in one place if you ever need to add a new service line or industry.
+export 
+const
+ ARTIFACT_TYPES = [
+  'Pitch Deck', 'Demo Video', 'Case Study',
+  'Architecture Doc', 'Template', 'Process Doc', 'Training Material'
+] as 
+const
+export 
+const
+ SERVICE_LINES = [
+  'AI & Automation', 'Product Engineering',
+  'Service Management', 'Cross-Service'
+] as 
+const
+export 
+const
+ INDUSTRIES = [
+  'EdTech', 'Manufacturing', 'Banking & FS', '
+InsurTech
+',
+  '
+AgriTech
+', 'Enterprise Services', 'SaaS & Technology',
+  'Consumer Services', 'Generic'
+] as 
+const
+export 
+const
+ AUDIENCES = [
+  'Sales & BD', 'Delivery Teams', 'Leadership',
+  'HR & People', 'All Employees'
+] as 
+const
+TIP  Helpful Tip
+as 
+const
+ tells TypeScript these arrays are fixed and should not be modified. This allows TypeScript to infer the exact string values as types.
+Section 8: Building the Portal — Pages and Components
+Now we build the actual user interface. We follow a bottom-up approach: build small, reusable components first, then assemble them into full pages.
+8.1 The Folder Structure You Will Create
+Before building anything, create this folder structure inside your project:
+algoleap-knowledge-hub/
+├── app/
+│   ├── login/
+│   │   └── 
+page.tsx
+          <- Login page
+│   ├── auth/
+│   │   └── callback/
+│   │       └── 
+route.ts
+      <- OAuth redirect handler
+│   ├── admin/
+│   │   └── 
+page.tsx
+          <- Admin panel
+│   ├── 
+page.tsx
+              <- Main 
+catalog
+ page
+│   └── 
+layout.tsx
+            <- Root layout
+│
+├── components/
+│   ├── 
+ArtifactCard.tsx
+      <- Single artifact card
+│   ├── 
+ArtifactGrid.tsx
+      <- Grid of cards + filtering logic
+│   ├── 
+ArtifactDrawer.tsx
+    <- Slide-out detail panel
+│   ├── 
+FilterSidebar.tsx
+     <- Left sidebar with filters
+│   ├── 
+SearchBar.tsx
+         <- Search input
+│   ├── 
+StatsBar.tsx
+          <- Summary numbers
+│   ├── 
+AdminTable.tsx
+        <- Admin artifact list
+│   └── 
+ArtifactForm.tsx
+      <- Add/edit form
+│
+├── lib/
+│   ├── 
+supabase
+/
+│   │   ├── 
+client.ts
+│   │   └── 
+server.ts
+│   ├── 
+types.ts
+│   └── 
+constants.ts
+│
+└── 
+middleware.ts
+TIP  Helpful Tip
+In VS Code, right-click in the Explorer panel on the left to create new files and folders. Create all these folders now even if they are empty — it helps you see the full picture.
+8.2 Build the Login Page
+The login page is the first thing users see. It has the Algoleap logo and a single 'Sign in with Google' button.
+File: app/login/
+page.tsx
+This page should:
+Show the Algoleap logo and 'Knowledge Hub' title
+Show a brief description: 'Sign in with your Algoleap Google account to access the artifact library'
+Show a green 'Sign in with Google' button
+When the button is clicked, call: 
+supabase.auth.signInWithOAuth
+({ provider: 'google' })
+Handle errors: if sign-in fails (e.g., wrong domain), show a red error message
+File: app/auth/callback/
+route.ts
+After Google redirects the user back to your app, this route handler exchanges the code for a session. Create it with this exact content:
+import { 
+createRouteHandlerClient
+ } from '@
+supabase
+/auth-helpers-
+nextjs
+'
+import { cookies } from 'next/headers'
+import { 
+NextResponse
+ } from 'next/server'
+export async function GET(request: Request) {
+  
+const
+ { 
+searchParams
+, origin } = new URL(request.url)
+  
+const
+ code = 
+searchParams.get
+('code')
+  if (code) {
+    
+const
+ 
+supabase
+ = 
+createRouteHandlerClient
+({ cookies })
+    await 
+supabase.auth.exchangeCodeForSession
+(code)
+  }
+  return 
+NextResponse.redirect
+(origin)
+}
+CONCEPT  What This Means
+When Google finishes authentication, it redirects the user to /auth/
+callback?code
+=XXXX with a special code.
+This route handler takes that code, sends it to 
+Supabase
+, and gets back a session (a proof that the user is logged in).
+Supabase
+ stores the session in a cookie. From this point, every page request includes that cookie and the user stays logged in.
+CHECK  Expected Result
+You can visit /login, see the login button, click it, and be redirected to Google's login page. After entering your Algoleap credentials, you are sent back to the portal.
+8.3 Build the 
+ArtifactCard
+ Component
+This is the card shown in the 
+catalog
+ grid for each artifact. It is a React component that accepts an 'artifact' object as a prop and displays it.
+File: components/
+ArtifactCard.tsx
+This component should render:
+A 
+colored
+ badge at the top showing the artifact type (e.g., 'Pitch Deck' in blue, 'Demo Video' in amber)
+The artifact title in bold
+A 2-line truncated description (CSS: overflow-hidden, line-clamp-2)
+A row of tag pills for service line and audience
+A footer showing the owner name and last updated date
+An 'Open' button that opens the 
+onedrive_url
+ in a new browser tab
+A status indicator: if status is 'needs-update', show an amber dot and label
+On hover, the card border turns green
+Clicking anywhere on the card (except the Open button) triggers an 
+onSelect
+ callback — this will open the detail drawer
+TIP  Helpful Tip
+Use Tailwind CSS classes for all styling. For example: 'rounded-xl border border-gray-200 
+bg
+-white p-4 hover:border-green-500 transition-
+colors
+ cursor-pointer'
+For the type badge 
+colors
+, create a small helper object: 
+const
+ 
+typeColors
+ = { 'Pitch Deck': 'bg-blue-100 text-blue-800', 'Demo Video': 'bg-amber-100 text-amber-800', ... }
+8.4 Build the 
+FilterSidebar
+ Component
+File: components/
+FilterSidebar.tsx
+This component shows filter sections on the left. It should:
+Render four filter groups: Artifact Type, Service Line, Audience, Status
+Each filter option shows a count (e.g., 'Pitch Deck  12')
+Clicking a filter option highlights it and emits an 
+onFilterChange
+ callback
+Active filters are shown with a green background and bold text
+The component receives the full artifact list as a prop and computes counts itself
+CONCEPT  What This Means
+A 'callback' is a function you pass to a component so the component can call it when something happens.
+For example: <
+FilterSidebar
+ 
+onFilterChange
+={(filters) => 
+setActiveFilters
+(filters)} />
+When the user clicks a filter, 
+FilterSidebar
+ calls 
+onFilterChange
+ with the new filter values. The parent page then uses those values to filter the artifact list.
+8.5 Build the 
+SearchBar
+ Component
+File: components/
+SearchBar.tsx
+A simple search input that:
+Has a search icon on the left (use 
+Lucide
+: import { Search } from '
+lucide
+-react')
+Fires an 
+onSearch
+ callback with the current input value as the user types
+Has a grid/list view toggle on the right (two icon buttons: 
+LayoutGrid
+, List from 
+Lucide
+)
+The active view button has a dark green background and white icon
+8.6 Build the 
+StatsBar
+ Component
+File: components/
+StatsBar.tsx
+Four metric cards in a row showing:
+Total artifacts (count of all artifacts)
+Added this month (count where 
+created_at
+ is within the current calendar month)
+Active (count where status = 'current')
+Needs review (count where status = 'needs-update')
+All counts are computed inside this component from the artifacts array prop — no API calls needed.
+8.7 Build the 
+ArtifactGrid
+ Component
+File: components/
+ArtifactGrid.tsx
+This is the main content area. It:
+Accepts the full artifact array, active filters, search query, and view mode as props
+Filters the array client-side based on active filters and search query
+Renders 
+ArtifactCard
+ components for each matching artifact
+Shows an empty state (illustration + message) when no artifacts match the filters
+Switches between CSS grid layout (grid view) and single-column list (list view)
+Filtering Logic (JavaScript)
+The filtering runs inside a 
+useMemo
+ hook for performance. Here is the logic:
+const
+ filtered = 
+useMemo
+(() => {
+  return 
+artifacts.filter
+(artifact => {
+    // Search: check title, description, 
+tech_tags
+    
+const
+ 
+matchesSearch
+ = !
+searchQuery
+ || [
+      
+artifact.title
+,
+      
+artifact.description
+ ?? '',
+      ...
+artifact.tech_tags
+    ].some(field => 
+field.toLowerCase
+().includes(
+searchQuery.toLowerCase
+()))
+    // Filters: check each active filter
+    
+const
+ 
+matchesType
+    = !
+filters.type
+    || 
+artifact.artifact_type
+ === 
+filters.type
+    
+const
+ 
+matchesSL
+      = !filters.sl      || 
+artifact.service_line.includes
+(filters.sl)
+    
+const
+ 
+matchesAud
+     = !
+filters.aud
+     || 
+artifact.audience.includes
+(
+filters.aud
+)
+    
+const
+ 
+matchesStatus
+  = !
+filters.status
+  || 
+artifact.status
+ === 
+filters.status
+    return 
+matchesSearch
+ && 
+matchesType
+ && 
+matchesSL
+ && 
+matchesAud
+ && 
+matchesStatus
+  })
+}, [artifacts, 
+searchQuery
+, filters])
+CONCEPT  What This Means
+useMemo
+ is a React hook that caches a computed value and only recomputes it when its dependencies change.
+Without 
+useMemo
+, the filtering would run on every single render — even when nothing changed. With it, it only runs when artifacts, 
+searchQuery
+, or filters change.
+8.8 Build the 
+ArtifactDrawer
+ Component
+File: components/
+ArtifactDrawer.tsx
+A slide-in panel from the right that shows full artifact details when a card is clicked:
+Slides in from the right side of the screen (CSS: translate-x-full -> translate-x-0 with transition)
+Dark overlay behind it (click overlay to close)
+Shows: full title, full description, all metadata fields, all tags, owner info with email link
+Large green 'Open in OneDrive' button at the top
+'Client Safe' badge if 
+is_client_safe
+ is true
+'X' close button in the top right corner
+8.9 Build the Main 
+Catalog
+ Page
+File: app/
+page.tsx
+This is the page that users land on after logging in. It assembles all the components. This page fetches data on the SERVER (using the server 
+Supabase
+ client) for fast initial load, then passes it to client components.
+// app/
+page.tsx
+  (Server Component — runs on the server)
+import { 
+createServerSupabase
+ } from '@/lib/
+supabase
+/server'
+export default async function 
+CatalogPage
+() {
+  
+const
+ 
+supabase
+ = 
+createServerSupabase
+()
+  // Fetch all non-archived artifacts
+  
+const
+ { data: artifacts } = await 
+supabase
+    .from('artifacts')
+    .select('*')
+    .
+neq
+('status', 'archived')
+    .order('
+updated_at
+', { ascending: false })
+  return <
+CatalogClient
+ artifacts={artifacts ?? []} />
+}
+CONCEPT  What This Means
+'Server Component' means this code runs on the server BEFORE the page is sent to the browser.
+The benefit: the page loads with data already in it — no loading spinner needed for the initial data.
+The 
+CatalogClient
+ component is a separate client-side component that handles all the interactive features (filtering, searching, clicking cards).
+Section 9: Building the Admin Panel
+The admin panel is a protected page where the knowledge management owner can add, edit, and archive artifacts. Regular employees who try to visit /admin are silently redirected back to the 
+catalog
+.
+9.1 Check Admin Access on the Server
+File: app/admin/
+page.tsx
+ (first few lines)
+// At the top of the admin page, check role server-side
+const
+ 
+supabase
+ = 
+createServerSupabase
+()
+const
+ { data: { session } } = await 
+supabase.auth.getSession
+()
+const
+ { data: profile } = await 
+supabase
+  .from('profiles')
+  .select('role')
+  .
+eq
+('id', session?.user.id)
+  .single()
+if (
+profile?.role
+ !== 'admin') {
+  redirect('/')  // Not an admin? Send back to 
+catalog
+}
+CAUTION  Watch Out
+Always check admin access on the SERVER — never rely only on client-side checks. A determined user could bypass client-side code, but they cannot bypass server-side checks.
+9.2 Build the Artifact Intake Form
+File: components/
+ArtifactForm.tsx
+This form opens in a slide-over panel when the admin clicks 'Add Artifact' or the edit icon on an existing artifact.
+Form fields (mark required fields clearly in the UI):
+Title — required text input
+Description — optional multi-line 
+textarea
+Artifact Type — required dropdown using ARTIFACT_TYPES from 
+constants.ts
+Service Line — multi-select checkboxes using SERVICE_LINES
+Industry — multi-select checkboxes using INDUSTRIES
+Audience — multi-select checkboxes using AUDIENCES
+Tech Tags — free-text input, comma-separated (split into array on save)
+OneDrive URL — required URL input (validated to start with https://)
+Owner Name — required text input
+Owner Email — required email input
+Status — dropdown: current / needs-update / archived
+Is Client Safe — toggle/checkbox
+Zod Validation Schema
+import { z } from '
+zod
+'
+export 
+const
+ 
+artifactSchema
+ = 
+z.object
+({
+  title:          
+z.string
+().min(1, 'Title is required'),
+  description:    
+z.string
+().optional(),
+  
+artifact_type
+:  
+z.string
+().min(1, 'Type is required'),
+  
+service_line
+:   
+z.array
+(
+z.string
+()).min(1, 'Select at least one service line'),
+  industry:       
+z.array
+(
+z.string
+()),
+  audience:       
+z.array
+(
+z.string
+()).min(1, 'Select at least one audience'),
+  
+tech_tags
+:      
+z.array
+(
+z.string
+()),
+  
+onedrive_url
+:   
+z.string
+().
+url
+('Must be a valid URL'),
+  
+owner_name
+:     
+z.string
+().min(1, 'Owner name is required'),
+  
+owner_email
+:    
+z.string
+().email('Must be a valid email'),
+  status:         
+z.enum
+(['current', 'needs-update', 'archived']),
+  
+is_client_safe
+: 
+z.boolean
+()
+})
+CONCEPT  What This Means
+Zod is a validation library. The schema above describes exactly what a valid artifact submission looks like.
+z.string
+().min(1, ...) means: must be a non-empty string.
+z.string
+().
+url
+(...) means: must be a valid URL format.
+If any field fails validation, Zod returns a specific error message that you display next to the relevant field.
+React Hook Form integrates with Zod via the 
+zodResolver
+ — it automatically runs validation on form submit and on field blur.
+Saving to 
+Supabase
+// On valid form submit:
+const
+ { error } = await 
+supabase
+  .from('artifacts')
+  .insert(
+formData
+)   // For new artifacts
+  // OR
+  .update(
+formData
+).
+eq
+('id', artifact.id)  // For edits
+CHECK  Expected Result
+The admin can fill the form, see validation errors for any missing/invalid fields, submit successfully, and see a green toast notification: 'Artifact added successfully'.
+The 
+catalog
+ grid immediately shows the new artifact after submit.
+9.3 Build the Admin Table
+File: components/
+AdminTable.tsx
+A table view of ALL artifacts (including archived ones) with management actions:
+Columns: Title, Type, Service Line, Status, Last Updated, Actions
+Each row has: Edit button (pencil icon), Archive button (archive icon), Delete button (trash icon with confirmation dialog)
+Status can be toggled inline via a dropdown on each row
+'Add Artifact' button at the top right opens the 
+ArtifactForm
+ slide-over
+Archived artifacts shown with greyed-out text
+Section 10: Making Filters Shareable via URL
+When a user filters artifacts, the filter should be reflected in the URL — for example: https://hub.algoleap.com/?type=Demo+Video&sl=AI+%26+Automation. This means users can bookmark or share a filtered view directly.
+CONCEPT  What This Means
+URL query parameters are the key=value pairs after the '?' in a URL.
+Next.js provides the 
+useSearchParams
+ and 
+useRouter
+ hooks to read and update these parameters.
+When a filter changes, we call 
+router.push
+() with the updated URL — this updates the URL without reloading the page.
+Reading filters from URL on page load
+'use client'
+import { 
+useSearchParams
+ } from 'next/navigation'
+const
+ 
+searchParams
+ = 
+useSearchParams
+()
+const
+ 
+initialType
+ = 
+searchParams.get
+('type') ?? ''
+const
+ 
+initialSL
+   = 
+searchParams.get
+('
+sl
+')   ?? ''
+Updating URL when filters change
+import { 
+useRouter
+ } from 'next/navigation'
+const
+ router = 
+useRouter
+()
+function 
+updateFilter
+(key: string, value: string) {
+  
+const
+ params = new 
+URLSearchParams
+(
+searchParams.toString
+())
+  if (value) 
+params.set
+(key, value)
+  else 
+params.delete
+(key)
+  
+router.push
+('?' + 
+params.toString
+())
+}
+CHECK  Expected Result
+When you click a filter in the sidebar, the URL in the browser changes to include the filter as a query parameter. If you copy the URL and open it in a new tab, the same filter is already applied.
+Section 11: Setting Up the First Admin User
+After the KM owner logs in for the first time, they will have the default 'viewer' role. You need to manually upgrade their role to 'admin' in 
+Supabase
+.
+Ask the KM owner to log in to the portal with their Algoleap Google account
+This will automatically create a row in the profiles table with role = 'viewer'
+In 
+Supabase
+, go to: Table Editor > profiles
+Find the row with the KM owner's email address
+Click on the 'role' cell and change it from 'viewer' to 'admin'
+Click Save
+Ask the KM owner to log out and log back in — they will now see the Admin panel link
+TIP  Helpful Tip
+In production, you may want to build a simple admin UI for managing user roles. For now, doing it directly in 
+Supabase
+ Table Editor is fine.
+Only give admin access to the KM owner and one backup person. Too many admins makes it hard to track who made changes.
+Section 12: Deploying to 
+Vercel
+ — Making It Live
+12.1 Push Your Code to GitHub
+Every deployment starts with pushing your code to GitHub. Run these commands in your terminal from inside the project folder:
+git add .
+git commit -m 'Initial build of Algoleap Knowledge Hub'
+git push origin main
+CONCEPT  What This Means
+git add . stages all your changed files for committing.
+git commit -m '...' saves a snapshot of your code with a description of what changed.
+git push origin main sends that snapshot to your GitHub repository.
+From this point, every time you push to the 'main' branch, 
+Vercel
+ will automatically re-deploy.
+12.2 Connect 
+Vercel
+ to Your GitHub Repository
+Log in to vercel.com
+Click 'Add New Project'
+Click 'Import Git Repository' and find your 'algoleap-knowledge-hub' repository
+Vercel
+ auto-detects Next.js — leave all build settings as default
+BEFORE clicking Deploy, click 'Environment Variables' and add all four variables from your .
+env.local
+ file
+Click 'Deploy'
+CAUTION  Watch Out
+CRITICAL: You MUST add the environment variables in 
+Vercel
+ before deploying. If you deploy without them, the app will crash because it cannot find the 
+Supabase
+ credentials.
+NEXT_PUBLIC_APP_URL should be set to your final 
+Vercel
+ URL (e.g., https://algoleap-knowledge-hub.vercel.app) — NOT localhost.
+CHECK  Expected Result
+Vercel
+ builds your project (takes 1-3 minutes).
+You see a confetti animation and a live URL like: https://algoleap-knowledge-hub.vercel.app
+Opening that URL shows the login page. Signing in with your Algoleap account takes you to the 
+catalog
+.
+12.3 Update 
+Supabase
+ Auth Settings for Production
+Now that you have a live URL, you need to update 
+Supabase
+ to allow redirects from it:
+In 
+Supabase
+, go to: Authentication > URL Configuration
+Add your 
+Vercel
+ URL to the 'Redirect URLs' list: https://algoleap-knowledge-hub.vercel.app/auth/callback
+Also update the Google OAuth credentials in Google Cloud Console — add the same callback URL
+CAUTION  Watch Out
+If you skip this step, login will fail in production even though it works locally. This is a common mistake — always update both 
+Supabase
+ and Google Console when your domain changes.
+12.4 Add a Custom Domain (Optional)
+In 
+Vercel
+, go to your project > Settings > Domains
+Add: hub.algoleap.com
+Follow 
+Vercel's
+ instructions to add a DNS record in your domain registrar (wherever 
+algoleap.com's
+ DNS is managed)
+Update the 
+Supabase
+ redirect URL and Google OAuth callback URL to use the new domain
+Section 13: Loading the First Artifacts into the Portal
+Once the portal is live and the KM owner has admin access, the first task is loading existing Algoleap artifacts into the 
+catalog
+. There are two ways to do this:
+Option A: Use the Admin Panel (Recommended for Ongoing Use)
+The KM owner logs in, goes to /admin, and uses the 'Add Artifact' form to add each artifact one at a time. This ensures all metadata is filled in correctly and consistently. For 30–50 initial artifacts, this is very manageable.
+Option B: Bulk Import via CSV (For the Initial Batch)
+If the KM owner has already prepared a spreadsheet of artifacts, you can import them directly into 
+Supabase
+:
+Prepare a CSV file with columns matching the artifacts table exactly
+In 
+Supabase
+, go to: Table Editor > artifacts
+Click 'Insert' > 'Import CSV'
+Upload the CSV file
+Verify the data looks correct in the Table Editor
+TIP  Helpful Tip
+For the CSV, array fields (
+service_line
+, industry, audience, 
+tech_tags
+) should be formatted as PostgreSQL arrays: {"AI & 
+Automation","Product
+ Engineering"}
+Have the KM owner do a final review pass in the admin panel after import to fill in any missing fields.
+Section 14: Testing Checklist Before Handover
+Before sharing the portal with all Algoleap employees, go through this checklist. Test each item yourself AND ask a colleague to test it independently.
+Test
+What to Check
+Pass / Fail
+Login — Valid Account
+Log in with an @algoleap.com Google account. Should reach the 
+catalog
+.
+Login — Invalid Account
+Try to log in with a personal Gmail account. Should see an error and be blocked.
+Search
+Type 'supply chain' in the search box. Only relevant artifacts should appear.
+Filter by Type
+Click 'Pitch Deck' in the sidebar. Only pitch decks should appear. Count should match the badge.
+Filter + Search
+Filter by 'AI & Automation' AND search 'RAG'. Only matching artifacts shown.
+Clear Filter
+Apply a filter then remove it. All artifacts return.
+Card Detail
+Click any artifact card. Slide-over panel opens with all metadata.
+Open Link
+Click 'Open' on an artifact. OneDrive file opens in a new tab.
+URL State
+Apply a filter. Copy the URL. Open in a new tab. Same filter is applied.
+Grid / List View
+Toggle between grid and list view. Layout switches correctly.
+Admin Access — Admin
+Log in as KM owner. /admin page is accessible.
+Admin Access — Non-Admin
+Log in as regular employee. Visiting /admin redirects to 
+catalog
+.
+Add Artifact
+Admin adds a new artifact with all required fields. It appears in the 
+catalog
+.
+Edit Artifact
+Admin edits an existing artifact. Changes are reflected immediately.
+Archive Artifact
+Admin archives an artifact. It disappears from the main 
+catalog
+ but is visible in admin with 'Archived' filter.
+Validation
+Admin submits the intake form with missing required fields. Specific error messages appear next to each invalid field.
+Mobile View
+Open the portal on a phone. All content is readable and usable.
+Section 15: Governance — Keeping the Portal Useful Over Time
+A knowledge portal is only valuable if the content stays current. These are the ongoing responsibilities after launch.
+15.1 Roles
+Role
+Who
+What They Can Do
+Viewer
+All Algoleap employees
+Browse, search, filter, and open artifact links. Cannot modify anything.
+Admin
+Knowledge Management Owner (1–2 people)
+Add, edit, and archive artifacts. Manage user roles via 
+Supabase
+ dashboard.
+15.2 Adding New Artifacts
+Anyone at Algoleap can request a new artifact be added — via a simple Google Form or email to the KM owner
+The requester provides: title, a brief description, the OneDrive link, and which team it is for
+The KM owner adds the remaining metadata and publishes it to the portal
+15.3 Quarterly Review
+Every quarter, the KM owner filters by 'Needs Update' and reviews those artifacts
+Out-of-date artifacts are either updated or archived
+The KM owner also checks for any artifacts that should be tagged as 'client safe' for the sales team

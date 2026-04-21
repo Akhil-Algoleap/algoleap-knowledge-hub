@@ -1,26 +1,52 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+@theme {
+  --color-algoleap-green: #00FF88;
+  --color-algoleap-green-hover: #00CC6A;
+  --color-algoleap-dark: #19593A; /* Reserving for dark green header */
+  --color-algoleap-card: #FFFFFF;
+  --color-algoleap-border: #E5E7EB;
+  --color-algoleap-muted: #6B7280;
+  --color-algoleap-error: #EF4444;
+  
+  --font-sans: 'Inter', system-ui, sans-serif;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
+@layer base {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: #F9FAFB;
+    --foreground: #111827;
+  }
+  
+  body {
+    background-color: var(--background);
+    color: var(--foreground);
+    @apply antialiased font-sans selection:bg-algoleap-green selection:text-black;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@layer components {
+  .glass-panel {
+    @apply bg-white border border-gray-200 rounded-2xl shadow-sm;
+  }
+  
+  .glass-card {
+    @apply bg-white border border-gray-200 rounded-xl shadow-sm hover:shadow-md transition-all duration-300;
+  }
+
+  .primary-btn {
+    @apply text-white bg-[#19593A] hover:bg-[#12422b] transition-colors font-medium px-4 py-2 rounded-lg;
+  }
+
+  .secondary-btn {
+    @apply text-gray-700 bg-white hover:bg-gray-50 border border-gray-300 transition-colors font-medium px-4 py-2 rounded-lg;
+  }
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
