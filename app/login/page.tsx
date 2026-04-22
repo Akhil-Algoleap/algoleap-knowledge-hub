@@ -50,7 +50,13 @@ export default function LoginPage() {
             token: otp,
             type: 'email'
           });
-          if (error) throw error;
+
+          if (error) {
+            // Check if we actually got logged in despite the error (common with late responses or race conditions)
+            const { data: { session } } = await supabase.auth.getSession();
+            if (!session) throw error;
+          }
+          
           window.location.href = '/';
         }
       }
