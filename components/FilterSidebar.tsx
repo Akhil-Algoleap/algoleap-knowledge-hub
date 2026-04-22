@@ -17,10 +17,13 @@ interface FilterSidebarProps {
   artifacts: Artifact[];
   filters: FilterState;
   onFilterChange: (key: keyof FilterState, value: string) => void;
+  onClearFilters: () => void;
 }
 
-export function FilterSidebar({ artifacts, filters, onFilterChange }: FilterSidebarProps) {
-  // Compute counts
+export function FilterSidebar({ artifacts, filters, onFilterChange, onClearFilters }: FilterSidebarProps) {
+  const hasActiveFilters = Object.values(filters).some(v => v !== '');
+  
+  // Compute counts (Static for now, but including Clear All UI)
   const counts = useMemo(() => {
     const typeCount: Record<string, number> = {};
     const slCount: Record<string, number> = {};
@@ -85,8 +88,23 @@ export function FilterSidebar({ artifacts, filters, onFilterChange }: FilterSide
   );
 
   return (
-    <div className="w-full sticky top-6 pt-2">
-      <div className="overflow-y-auto max-h-[calc(100vh-100px)] pr-4 scrollbar-hide pb-20">
+    <div className="w-full sticky top-6 pt-2 text-gray-800">
+      <div className="flex items-center justify-between mb-6">
+        <h2 className="text-sm font-bold flex items-center gap-2">
+          <Filter className="w-4 h-4 text-[#19593A]" />
+          Filters
+        </h2>
+        {hasActiveFilters && (
+          <button 
+            onClick={onClearFilters}
+            className="text-[11px] font-bold text-[#19593A] hover:text-[#00CC6A] transition-colors uppercase tracking-wider"
+          >
+            Clear All
+          </button>
+        )}
+      </div>
+
+      <div className="overflow-y-auto max-h-[calc(100vh-140px)] pr-4 scrollbar-hide pb-20">
         <FilterSection 
           title="Artifact Type" 
           options={ARTIFACT_TYPES} 

@@ -23,14 +23,26 @@ export async function GET(request: Request) {
               )
             } catch {
               // The `setAll` method was called from a Server Component.
-              // This can be ignored if you have middleware refreshing user sessions.
             }
           },
         },
       }
     )
     
-    await supabase.auth.exchangeCodeForSession(code)
+    try {
+      const { error } = await supabase.auth.exchangeCodeForSession(code)
+      if (error) throw error
+
+      const { data: { user } } = await supabase.auth.getUser()
+      
+      if (user && !user.email?.endsWith('@algoleap.com')) {
+        await supabase.auth.signOut()
+        return NextResponse.redirect(`${origin}/login?error=Invalid domain`)
+      }
+    } catch (error) {
+      console.error('Auth callback error:', error)
+      return NextResponse.redirect(`${origin}/login?error=Authentication failed`)
+    }
   }
 
   return NextResponse.redirect(`${origin}/`)

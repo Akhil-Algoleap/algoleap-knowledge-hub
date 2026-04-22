@@ -9,10 +9,11 @@ import { ArtifactGrid } from '@/components/ArtifactGrid';
 import { ArtifactDrawer } from '@/components/ArtifactDrawer';
 import { useSearchParams, useRouter } from 'next/navigation';
 
-import { ArtifactForm } from '@/components/ArtifactForm';
 import { Settings, Plus } from 'lucide-react';
-
+import { supabase } from '@/lib/supabase/client';
 import Link from 'next/link';
+import { useMemo } from 'react';
+import { ArtifactForm } from '@/components/ArtifactForm';
 
 export function CatalogClient({ initialArtifacts, isAdmin }: { initialArtifacts: Artifact[], isAdmin?: boolean }) {
   const router = useRouter();
@@ -37,12 +38,43 @@ export function CatalogClient({ initialArtifacts, isAdmin }: { initialArtifacts:
   });
 
   const handleFilterChange = (key: keyof FilterState, value: string) => {
-    setFilters(prev => ({ ...prev, [key]: value }));
-    const params = new URLSearchParams(searchParams.toString());
+    // Determine the new state: clear everything else but the current key
+    const newFilters: FilterState = { type: '', sl: '', aud: '', status: '' };
+    if (value) newFilters[key] = value;
+    
+    setFilters(newFilters);
+    
+    // Update URL params
+    const params = new URLSearchParams();
     if (value) params.set(key, value);
-    else params.delete(key);
+    
     router.push('?' + params.toString(), { scroll: false });
   };
+
+  const clearFilters = () => {
+    setFilters({ type: '', sl: '', aud: '', status: '' });
+    setSearchQuery('');
+    router.push('/', { scroll: false });
+  };
+
+  const filteredArtifacts = useMemo(() => {
+    return artifactsList.filter(artifact => {
+      // Search logic
+      const matchesSearch = !searchQuery || [
+        artifact.title,
+        artifact.description || '',
+        ...(artifact.tech_tags || [])
+      ].some(field => field.toLowerCase().includes(searchQuery.toLowerCase()));
+
+      // Filter logic
+      const matchesType = !filters.type || artifact.artifact_type === filters.type;
+      const matchesSL = !filters.sl || artifact.service_line.includes(filters.sl);
+      const matchesAud = !filters.aud || artifact.audience.includes(filters.aud);
+      const matchesStatus = !filters.status || artifact.status === filters.status;
+
+      return matchesSearch && matchesType && matchesSL && matchesAud && matchesStatus;
+    });
+  }, [artifactsList, searchQuery, filters]);
 
   const handleSuccess = () => {
     setIsFormOpen(false);
@@ -76,9 +108,9 @@ export function CatalogClient({ initialArtifacts, isAdmin }: { initialArtifacts:
             </>
           )}
           <button 
-            onClick={() => {
-              document.cookie = "mock_auth=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-              window.location.href = "/login";
+            onClick={async () => {
+              await supabase.auth.signOut();
+              router.push("/login");
             }}
             className="ml-2 text-white/70 hover:text-white text-sm underline transition-colors"
           >
@@ -95,6 +127,7 @@ export function CatalogClient({ initialArtifacts, isAdmin }: { initialArtifacts:
             artifacts={artifactsList} 
             filters={filters} 
             onFilterChange={handleFilterChange} 
+            onClearFilters={clearFilters}
           />
         </div>
 
@@ -105,12 +138,15 @@ export function CatalogClient({ initialArtifacts, isAdmin }: { initialArtifacts:
             setSearchQuery={setSearchQuery} 
             viewMode={viewMode}
             setViewMode={setViewMode}
+            filters={filters}
+            onFilterChange={handleFilterChange}
+            onClearFilters={clearFilters}
           />
           
-          <StatsBar artifacts={artifactsList} />
+          <StatsBar artifacts={filteredArtifacts} />
           
           <ArtifactGrid 
-            artifacts={artifactsList}
+            artifacts={filteredArtifacts}
             filters={filters}
             searchQuery={searchQuery}
             viewMode={viewMode}

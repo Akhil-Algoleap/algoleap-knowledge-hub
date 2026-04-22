@@ -56,7 +56,7 @@ export function ArtifactCard({ artifact, onSelect, viewMode }: ArtifactCardProps
             <h3 className="text-gray-900 font-bold truncate group-hover:text-[#19593A] transition-colors">
               {artifact.title}
             </h3>
-            <p className="text-sm text-gray-500 truncate mt-0.5">
+            <p className="text-sm text-gray-500 truncate mt-0.5" suppressHydrationWarning>
               {artifact.owner_name} • {new Date(artifact.updated_at).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric'})}
             </p>
           </div>
@@ -131,7 +131,9 @@ export function ArtifactCard({ artifact, onSelect, viewMode }: ArtifactCardProps
             {getInitials(artifact.owner_name || '')}
           </div>
           <div>
-            <span className="text-xs text-gray-400 block -mb-0.5">{new Date(artifact.updated_at).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric'})}</span>
+            <span className="text-xs text-gray-400 block -mb-0.5" suppressHydrationWarning>
+              {new Date(artifact.updated_at).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric'})}
+            </span>
           </div>
         </div>
         <button 

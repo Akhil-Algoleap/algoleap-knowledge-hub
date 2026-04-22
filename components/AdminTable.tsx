@@ -98,7 +98,7 @@ export function AdminTable({ initialArtifacts }: { initialArtifacts: Artifact[] 
                       <option value="archived" className="bg-algoleap-dark text-white">Archived</option>
                     </select>
                   </td>
-                  <td className="px-6 py-4 text-algoleap-muted">
+                  <td className="px-6 py-4 text-algoleap-muted" suppressHydrationWarning>
                     {new Date(item.updated_at).toLocaleDateString()}
                   </td>
                   <td className="px-6 py-4 text-right">

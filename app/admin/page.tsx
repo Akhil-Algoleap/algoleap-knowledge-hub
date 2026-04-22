@@ -6,14 +6,26 @@ import { ArrowLeft } from 'lucide-react';
 import { cookies } from 'next/headers';
 export default async function AdminPage() {
   const supabase = await createServerSupabase();
-  const cookieStore = await cookies();
-  const mockAuth = cookieStore.get('mock_auth');
   
-  if (!mockAuth) {
+  // Get real user session
+  const { data: { user } } = await supabase.auth.getUser();
+  
+  if (!user) {
     redirect('/login');
   }
 
-  if (mockAuth.value !== 'admin') {
+  // Check admin role in profiles table
+  const { data: profile } = await supabase
+    .from('profiles')
+    .select('role')
+    .eq('id', user.id)
+    .single();
+
+  // List of hardcoded admin emails for safety/POC
+  const hardcodedAdmins = ['akhil.bommera@algoleap.com'];
+  const isHardcodedAdmin = user.email && hardcodedAdmins.includes(user.email);
+
+  if (profile?.role !== 'admin' && !isHardcodedAdmin) {
     redirect('/');
   }
 

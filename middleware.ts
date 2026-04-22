@@ -27,22 +27,18 @@ export async function updateSession(request: NextRequest) {
     }
   )
 
-  // Fallback to mock auth temporary workaround
-  const isMockAuth = request.cookies.has('mock_auth')
-
+  // Get the current user
+  const { data: { user } } = await supabase.auth.getUser()
   const isAuthRoute = request.nextUrl.pathname.startsWith('/login') || request.nextUrl.pathname.startsWith('/auth')
 
-  if (!isMockAuth && !isAuthRoute) {
-    const url = request.nextUrl.clone()
-    url.pathname = '/login'
-    return NextResponse.redirect(url)
+  // If no user and not on an auth route, redirect to login
+  if (!user && !isAuthRoute) {
+    return NextResponse.redirect(new URL('/login', request.url))
   }
 
-  // If user is logged in (mock) and tries to access login page, redirect to home
-  if (isMockAuth && isAuthRoute) {
-    const url = request.nextUrl.clone()
-    url.pathname = '/'
-    return NextResponse.redirect(url)
+  // If user is logged in and tries to access login page, redirect to home
+  if (user && isAuthRoute) {
+    return NextResponse.redirect(new URL('/', request.url))
   }
 
   return supabaseResponse
