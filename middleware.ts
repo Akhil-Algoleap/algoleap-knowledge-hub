@@ -1,51 +1,50 @@
 import { createServerClient } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
 
-export async function updateSession(request: NextRequest) {
+export const runtime = 'edge';
+
+export async function middleware(request: NextRequest) {
   let supabaseResponse = NextResponse.next({
     request,
   })
 
-  const supabase = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL || '',
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '',
-    {
-      cookies: {
-        getAll() {
-          return request.cookies.getAll()
+  try {
+    const supabase = createServerClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL || '',
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '',
+      {
+        cookies: {
+          getAll() {
+            return request.cookies.getAll()
+          },
+          setAll(cookiesToSet) {
+            cookiesToSet.forEach(({ name, value, options }) => request.cookies.set(name, value))
+            supabaseResponse = NextResponse.next({
+              request,
+            })
+            cookiesToSet.forEach(({ name, value, options }) =>
+              supabaseResponse.cookies.set(name, value, options)
+            )
+          },
         },
-        setAll(cookiesToSet) {
-          cookiesToSet.forEach(({ name, value, options }) => request.cookies.set(name, value))
-          supabaseResponse = NextResponse.next({
-            request,
-          })
-          cookiesToSet.forEach(({ name, value, options }) =>
-            supabaseResponse.cookies.set(name, value, options)
-          )
-        },
-      },
+      }
+    )
+
+    const { data: { user } } = await supabase.auth.getUser()
+    const isAuthRoute = request.nextUrl.pathname.startsWith('/login') || request.nextUrl.pathname.startsWith('/auth')
+
+    if (!user && !isAuthRoute) {
+      return NextResponse.redirect(new URL('/login', request.url))
     }
-  )
 
-  // Get the current user
-  const { data: { user } } = await supabase.auth.getUser()
-  const isAuthRoute = request.nextUrl.pathname.startsWith('/login') || request.nextUrl.pathname.startsWith('/auth')
-
-  // If no user and not on an auth route, redirect to login
-  if (!user && !isAuthRoute) {
-    return NextResponse.redirect(new URL('/login', request.url))
-  }
-
-  // If user is logged in and tries to access login page, redirect to home
-  if (user && isAuthRoute) {
-    return NextResponse.redirect(new URL('/', request.url))
+    if (user && isAuthRoute) {
+      return NextResponse.redirect(new URL('/', request.url))
+    }
+  } catch (e) {
+    console.error("Middleware error:", e);
   }
 
   return supabaseResponse
-}
-
-export async function middleware(request: NextRequest) {
-  return await updateSession(request)
 }
 
 export const config = {
