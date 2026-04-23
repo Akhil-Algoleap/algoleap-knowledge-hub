@@ -9,6 +9,7 @@ interface ArtifactCardProps {
   artifact: Artifact;
   onSelect: (artifact: Artifact) => void;
   viewMode: 'grid' | 'list';
+  isAdmin?: boolean;
 }
 
 const typeColors: Record<string, string> = {
@@ -27,7 +28,7 @@ const getInitials = (name: string) => {
   return name.split(' ').map(n => n[0]).join('').substring(0,2).toUpperCase();
 };
 
-export function ArtifactCard({ artifact, onSelect, viewMode }: ArtifactCardProps) {
+export function ArtifactCard({ artifact, onSelect, viewMode, isAdmin }: ArtifactCardProps) {
   const typeStyle = typeColors[artifact.artifact_type] || 'bg-gray-100 text-gray-700 border-gray-200';
 
   const handleOpen = (e: MouseEvent) => {
@@ -63,7 +64,7 @@ export function ArtifactCard({ artifact, onSelect, viewMode }: ArtifactCardProps
         </div>
         
         <div className="flex items-center gap-4 shrink-0">
-          {artifact.status === 'needs-update' && (
+          {isAdmin && artifact.status === 'needs-update' && (
             <span className="flex items-center gap-1.5 text-xs text-amber-700 bg-amber-50 px-2.5 py-1 rounded-full border border-amber-200 shrink-0 font-medium">
               Needs Review
             </span>
@@ -96,7 +97,7 @@ export function ArtifactCard({ artifact, onSelect, viewMode }: ArtifactCardProps
               </span>
             )}
           </div>
-          {artifact.status === 'needs-update' && (
+          {isAdmin && artifact.status === 'needs-update' && (
             <button className="p-1.5 border border-gray-200 rounded-md text-gray-400 hover:text-amber-600 hover:bg-amber-50 transition-colors">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
             </button>

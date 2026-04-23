@@ -11,11 +11,11 @@ interface ArtifactGridProps {
   artifacts: Artifact[];
   filters: FilterState;
   searchQuery: string;
-  viewMode: 'grid' | 'list';
   onSelectArtifact: (artifact: Artifact) => void;
+  isAdmin?: boolean;
 }
 
-export function ArtifactGrid({ artifacts, filters, searchQuery, viewMode, onSelectArtifact }: ArtifactGridProps) {
+export function ArtifactGrid({ artifacts, filters, searchQuery, viewMode, onSelectArtifact, isAdmin }: ArtifactGridProps) {
   
   const filtered = artifacts;
 
@@ -55,6 +55,7 @@ export function ArtifactGrid({ artifacts, filters, searchQuery, viewMode, onSele
               artifact={artifact} 
               onSelect={onSelectArtifact} 
               viewMode={viewMode}
+              isAdmin={isAdmin}
             />
           </motion.div>
         ))}

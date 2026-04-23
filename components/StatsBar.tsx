@@ -5,9 +5,10 @@ import { useMemo } from 'react';
 
 interface StatsBarProps {
   artifacts: Artifact[];
+  isAdmin?: boolean;
 }
 
-export function StatsBar({ artifacts }: StatsBarProps) {
+export function StatsBar({ artifacts, isAdmin }: StatsBarProps) {
   const stats = useMemo(() => {
     const total = artifacts.length;
     
@@ -28,11 +29,11 @@ export function StatsBar({ artifacts }: StatsBarProps) {
   }, [artifacts]);
 
   const cards = [
-    { label: 'Total Artifacts', value: stats.total, color: 'text-slate-800' },
-    { label: 'Added This Month', value: stats.addedThisMonth, color: 'text-slate-800' },
-    { label: 'Active', value: stats.active, color: 'text-[#19593A]' },
-    { label: 'Needs Review', value: stats.needsReview, color: 'text-amber-600' },
-  ];
+    { label: 'Total Artifacts', value: stats.total, color: 'text-slate-800', show: true },
+    { label: 'Added This Month', value: stats.addedThisMonth, color: 'text-slate-800', show: true },
+    { label: 'Active', value: stats.active, color: 'text-[#19593A]', show: isAdmin },
+    { label: 'Needs Review', value: stats.needsReview, color: 'text-amber-600', show: isAdmin },
+  ].filter(c => c.show);
 
   return (
     <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">

@@ -89,19 +89,16 @@ export function CatalogClient({ initialArtifacts, isAdmin }: { initialArtifacts:
   return (
     <div className="flex flex-col min-h-screen">
       {/* Top Header */}
-      <header className="bg-[#19593A] text-white py-3 px-6 flex justify-between items-center w-full">
-        <div className="flex items-center gap-3">
-          <div className="bg-algoleap-green p-1.5 rounded text-black flex items-center justify-center font-bold">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
-          </div>
-          <span className="font-extrabold tracking-tight text-xl">algoleap</span>
-          <span className="text-white/60 font-light mx-1">|</span>
-          <span className="font-medium text-[15px]">Knowledge Hub</span>
+      <header className="bg-white border-b border-gray-200 py-4 px-6 flex justify-between items-center w-full shadow-sm sticky top-0 z-40">
+        <div className="flex items-center gap-4">
+          <img src="/logo.png" alt="algoleap" className="h-10 w-auto object-contain" />
+          <div className="h-6 w-px bg-gray-200 mx-1 hidden sm:block"></div>
+          <span className="font-bold text-gray-800 text-[16px] hidden sm:block tracking-tight">Knowledge Hub</span>
         </div>
         <div className="flex items-center gap-3">
           {isAdmin && (
             <>
-              <Link href="/admin" className="flex items-center gap-2 text-white hover:text-algoleap-green transition-colors text-sm font-medium mr-2">
+              <Link href="/admin" className="flex items-center gap-2 text-gray-600 hover:text-[#19593A] transition-colors text-sm font-bold mr-2">
                 <Settings className="w-4 h-4" /> Admin
               </Link>
               <button 
@@ -117,7 +114,7 @@ export function CatalogClient({ initialArtifacts, isAdmin }: { initialArtifacts:
               await supabase.auth.signOut();
               router.push("/login");
             }}
-            className="ml-2 text-white/70 hover:text-white text-sm underline transition-colors"
+            className="ml-2 text-gray-500 hover:text-gray-900 text-sm font-bold transition-colors"
           >
             Sign Out
           </button>
@@ -133,6 +130,7 @@ export function CatalogClient({ initialArtifacts, isAdmin }: { initialArtifacts:
             filters={filters} 
             onFilterChange={handleFilterChange} 
             onClearFilters={clearFilters}
+            isAdmin={isAdmin}
           />
         </div>
 
@@ -148,7 +146,7 @@ export function CatalogClient({ initialArtifacts, isAdmin }: { initialArtifacts:
             onClearFilters={clearFilters}
           />
           
-          <StatsBar artifacts={filteredArtifacts} />
+          <StatsBar artifacts={filteredArtifacts} isAdmin={isAdmin} />
           
           <ArtifactGrid 
             artifacts={filteredArtifacts}
@@ -156,6 +154,7 @@ export function CatalogClient({ initialArtifacts, isAdmin }: { initialArtifacts:
             searchQuery={searchQuery}
             viewMode={viewMode}
             onSelectArtifact={setSelectedArtifact}
+            isAdmin={isAdmin}
           />
         </div>
       </div>
@@ -163,6 +162,7 @@ export function CatalogClient({ initialArtifacts, isAdmin }: { initialArtifacts:
       <ArtifactDrawer 
         artifact={selectedArtifact} 
         onClose={() => setSelectedArtifact(null)} 
+        isAdmin={isAdmin}
       />
 
       <ArtifactForm 

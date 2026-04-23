@@ -87,32 +87,27 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center relative overflow-hidden bg-[#0A0F0D]">
-      {/* Dynamic Background */}
+    <div className="min-h-screen flex items-center justify-center relative overflow-hidden bg-white">
+      {/* Dynamic Background (Soft) */}
       <div className="absolute inset-0 z-0">
-        <div className="absolute top-0 -left-1/4 w-[800px] h-[800px] bg-algoleap-green/5 rounded-full blur-[160px]" />
-        <div className="absolute bottom-0 -right-1/4 w-[800px] h-[800px] bg-emerald-900/10 rounded-full blur-[160px]" />
+        <div className="absolute top-0 -left-1/4 w-[800px] h-[800px] bg-green-50 rounded-full blur-[160px]" />
+        <div className="absolute bottom-0 -right-1/4 w-[800px] h-[800px] bg-emerald-50/50 rounded-full blur-[160px]" />
       </div>
       
       <div className="relative z-10 w-full max-w-md p-6">
-        <div className="bg-[#0A0F0D]/80 backdrop-blur-3xl p-10 border border-white/10 rounded-3xl shadow-[0_0_50px_rgba(0,0,0,0.5)]">
-          <div className="flex items-center justify-center gap-3 mb-10">
-            <div className="bg-[#00FF88] p-3 rounded-2xl text-[#19593A] flex items-center justify-center shadow-lg shadow-[#00FF88]/20">
-              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
-                <polygon points="5 3 19 12 5 21 5 3"></polygon>
-              </svg>
-            </div>
-            <span className="font-black tracking-tighter text-4xl text-white">algoleap</span>
+        <div className="bg-white p-10 border border-gray-100 rounded-3xl shadow-[0_20px_60px_rgba(0,0,0,0.08)]">
+          <div className="flex items-center justify-center mb-10">
+            <img src="/logo.png" alt="algoleap" className="h-14 w-auto object-contain" />
           </div>
 
           {/* Perspective Toggle (Hidden when OTP field is visible to avoid confusion) */}
           {!showOtp && (
-            <div className="bg-white/5 p-1.5 rounded-2xl flex mb-10 border border-white/5 animate-in fade-in duration-500">
+            <div className="bg-gray-100 p-1.5 rounded-2xl flex mb-10 border border-gray-200 animate-in fade-in duration-500">
               <button 
                 onClick={() => { setAuthMode('employee'); setMessage(null); }}
                 className={cn(
                   "flex-1 py-3 text-[13px] font-bold rounded-xl transition-all",
-                  authMode === 'employee' ? "bg-white/10 text-white shadow-[0_0_15px_rgba(255,255,255,0.05)]" : "text-gray-500 hover:text-white"
+                  authMode === 'employee' ? "bg-white text-[#19593A] shadow-sm" : "text-gray-500 hover:text-gray-900"
                 )}
               >
                 Employee Access
@@ -121,7 +116,7 @@ export default function LoginPage() {
                 onClick={() => { setAuthMode('admin'); setMessage(null); }}
                 className={cn(
                   "flex-1 py-3 text-[13px] font-bold rounded-xl transition-all",
-                  authMode === 'admin' ? "bg-[#00FF88] text-[#19593A] shadow-[0_0_20px_rgba(0,255,136,0.2)]" : "text-gray-500 hover:text-white"
+                  authMode === 'admin' ? "bg-[#19593A] text-white shadow-sm" : "text-gray-500 hover:text-gray-900"
                 )}
               >
                 Admin Console
@@ -142,7 +137,7 @@ export default function LoginPage() {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder={authMode === 'admin' ? 'admin@algoleap.com' : 'name@algoleap.com'}
-                    className="w-full bg-black/40 border border-white/10 rounded-2xl px-5 py-4 text-white placeholder:text-gray-700 focus:outline-none focus:ring-2 focus:ring-[#00FF88]/20 focus:border-[#00FF88] transition-all"
+                    className="w-full bg-white border border-gray-200 rounded-2xl px-5 py-4 text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-[#19593A]/10 focus:border-[#19593A] transition-all"
                   />
                 </div>
 
@@ -157,7 +152,7 @@ export default function LoginPage() {
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
                       placeholder="••••••••"
-                      className="w-full bg-black/40 border border-white/10 rounded-2xl px-5 py-4 text-white placeholder:text-gray-700 focus:outline-none focus:ring-2 focus:ring-[#00FF88]/20 focus:border-[#00FF88] transition-all"
+                      className="w-full bg-white border border-gray-200 rounded-2xl px-5 py-4 text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-[#19593A]/10 focus:border-[#19593A] transition-all"
                     />
                   </div>
                 )}
@@ -175,7 +170,7 @@ export default function LoginPage() {
                     value={otp}
                     onChange={(e) => setOtp(e.target.value)}
                     placeholder="000000"
-                    className="w-full bg-black/40 border border-[#00FF88]/20 rounded-2xl px-5 py-6 text-center text-3xl font-black tracking-[0.5em] text-[#00FF88] placeholder:text-gray-800 focus:outline-none focus:ring-4 focus:ring-[#00FF88]/10 focus:border-[#00FF88] transition-all"
+                    className="w-full bg-gray-50 border border-gray-200 rounded-2xl px-5 py-6 text-center text-3xl font-black tracking-[0.5em] text-[#19593A] placeholder:text-gray-300 focus:outline-none focus:ring-4 focus:ring-[#19593A]/5 focus:border-[#19593A] transition-all"
                   />
                   <p className="text-[10px] text-gray-500 text-center mt-3 px-4 italic leading-relaxed">
                     Type the verification code found in your email. <br/>
@@ -198,8 +193,8 @@ export default function LoginPage() {
               className={cn(
                 "w-full py-4.5 rounded-2xl font-black text-[14px] uppercase tracking-wider transition-all disabled:opacity-50",
                 authMode === 'admin' 
-                  ? "bg-[#00FF88] text-[#19593A] hover:bg-[#00e57a]" 
-                  : "bg-white text-[#0A0F0D] hover:bg-gray-100"
+                  ? "bg-[#19593A] text-white hover:bg-[#12422b]" 
+                  : "bg-[#19593A] text-white hover:bg-[#12422b]"
               )}
             >
               {isLoading ? 'Processing...' : (
@@ -223,7 +218,7 @@ export default function LoginPage() {
           )}
 
           <div className="mt-12 text-center opacity-40">
-            <p className="text-gray-100 text-[10px] font-bold uppercase tracking-[0.3em]">
+            <p className="text-gray-500 text-[10px] font-bold uppercase tracking-[0.3em]">
               Algoleap Central Identity<br/>
               Encrypted Session v2.4
             </p>

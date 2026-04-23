@@ -18,9 +18,10 @@ interface FilterSidebarProps {
   filters: FilterState;
   onFilterChange: (key: keyof FilterState, value: string) => void;
   onClearFilters: () => void;
+  isAdmin?: boolean;
 }
 
-export function FilterSidebar({ artifacts, filters, onFilterChange, onClearFilters }: FilterSidebarProps) {
+export function FilterSidebar({ artifacts, filters, onFilterChange, onClearFilters, isAdmin }: FilterSidebarProps) {
   const hasActiveFilters = Object.values(filters).some(v => v !== '');
   
   // Compute counts (Static for now, but including Clear All UI)
@@ -124,45 +125,47 @@ export function FilterSidebar({ artifacts, filters, onFilterChange, onClearFilte
           countMap={counts.aud} 
         />
         
-        <div className="mb-8">
-          <h3 className="text-[11px] font-bold text-gray-400 uppercase tracking-wider mb-4">Status</h3>
-          <ul className="space-y-1">
-            <li>
-              <button
-                onClick={() => onFilterChange('status', filters.status === 'current' ? '' : 'current')}
-                className={cn(
-                  "w-full text-left flex items-center justify-between py-1.5 px-2 -mx-2 rounded-lg text-[13px] font-medium transition-colors cursor-pointer",
-                  filters.status === 'current' 
-                    ? "text-[#19593A] bg-green-50" 
-                    : "text-gray-600 hover:bg-gray-100 hover:text-gray-900"
-                )}
-              >
-                <span className="flex items-center gap-2">
-                  <span className={cn("w-1.5 h-1.5 rounded-full shrink-0", filters.status === 'current' ? "bg-[#19593A]" : "bg-green-500")}></span>
-                  Current
-                </span>
-                <span className={cn("text-[10px] py-0.5 px-2 rounded-full font-bold ml-2", filters.status === 'current' ? "bg-green-100 text-[#19593A]" : "bg-gray-100 text-gray-400")}>{counts.current}</span>
-              </button>
-            </li>
-            <li>
-              <button
-                onClick={() => onFilterChange('status', filters.status === 'needs-update' ? '' : 'needs-update')}
-                className={cn(
-                  "w-full text-left flex items-center justify-between py-1.5 px-2 -mx-2 rounded-lg text-[13px] font-medium transition-colors cursor-pointer",
-                  filters.status === 'needs-update' 
-                    ? "text-amber-700 bg-amber-50" 
-                    : "text-gray-600 hover:bg-gray-100 hover:text-gray-900"
-                )}
-              >
-                <span className="flex items-center gap-2">
-                  <span className="w-1.5 h-1.5 rounded-full shrink-0 bg-amber-500"></span>
-                  Needs Update
-                </span>
-                <span className={cn("text-[10px] py-0.5 px-2 rounded-full font-bold ml-2", filters.status === 'needs-update' ? "bg-amber-100 text-amber-700" : "bg-gray-100 text-gray-400")}>{counts.needsUpdate}</span>
-              </button>
-            </li>
-          </ul>
-        </div>
+        {isAdmin && (
+          <div className="mb-8">
+            <h3 className="text-[11px] font-bold text-gray-400 uppercase tracking-wider mb-4">Status</h3>
+            <ul className="space-y-1">
+              <li>
+                <button
+                  onClick={() => onFilterChange('status', filters.status === 'current' ? '' : 'current')}
+                  className={cn(
+                    "w-full text-left flex items-center justify-between py-1.5 px-2 -mx-2 rounded-lg text-[13px] font-medium transition-colors cursor-pointer",
+                    filters.status === 'current' 
+                      ? "text-[#19593A] bg-green-50" 
+                      : "text-gray-600 hover:bg-gray-100 hover:text-gray-900"
+                  )}
+                >
+                  <span className="flex items-center gap-2">
+                    <span className={cn("w-1.5 h-1.5 rounded-full shrink-0", filters.status === 'current' ? "bg-[#19593A]" : "bg-green-500")}></span>
+                    Current
+                  </span>
+                  <span className={cn("text-[10px] py-0.5 px-2 rounded-full font-bold ml-2", filters.status === 'current' ? "bg-green-100 text-[#19593A]" : "bg-gray-100 text-gray-400")}>{counts.current}</span>
+                </button>
+              </li>
+              <li>
+                <button
+                  onClick={() => onFilterChange('status', filters.status === 'needs-update' ? '' : 'needs-update')}
+                  className={cn(
+                    "w-full text-left flex items-center justify-between py-1.5 px-2 -mx-2 rounded-lg text-[13px] font-medium transition-colors cursor-pointer",
+                    filters.status === 'needs-update' 
+                      ? "text-amber-700 bg-amber-50" 
+                      : "text-gray-600 hover:bg-gray-100 hover:text-gray-900"
+                  )}
+                >
+                  <span className="flex items-center gap-2">
+                    <span className="w-1.5 h-1.5 rounded-full shrink-0 bg-amber-500"></span>
+                    Needs Update
+                  </span>
+                  <span className={cn("text-[10px] py-0.5 px-2 rounded-full font-bold ml-2", filters.status === 'needs-update' ? "bg-amber-100 text-amber-700" : "bg-gray-100 text-gray-400")}>{counts.needsUpdate}</span>
+                </button>
+              </li>
+            </ul>
+          </div>
+        )}
       </div>
     </div>
   );

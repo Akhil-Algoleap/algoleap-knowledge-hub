@@ -8,9 +8,10 @@ import { motion, AnimatePresence } from 'framer-motion';
 interface ArtifactDrawerProps {
   artifact: Artifact | null;
   onClose: () => void;
+  isAdmin?: boolean;
 }
 
-export function ArtifactDrawer({ artifact, onClose }: ArtifactDrawerProps) {
+export function ArtifactDrawer({ artifact, onClose, isAdmin }: ArtifactDrawerProps) {
   
   // Close on Escape key
   useEffect(() => {
@@ -73,7 +74,7 @@ export function ArtifactDrawer({ artifact, onClose }: ArtifactDrawerProps) {
                       <ShieldCheck className="h-3.5 w-3.5" /> Client Safe
                     </span>
                   )}
-                  {artifact.status === 'needs-update' && (
+                  {isAdmin && artifact.status === 'needs-update' && (
                     <span className="px-3 py-1 rounded-full text-xs font-bold bg-amber-50 text-amber-700 border border-amber-200">
                       Needs Update
                     </span>
