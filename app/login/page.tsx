@@ -3,6 +3,7 @@
 import { supabase } from '@/lib/supabase/client';
 import { useState, useEffect } from 'react';
 import { cn } from '@/lib/utils';
+import { Logo } from '@/components/Logo';
 
 export default function LoginPage() {
   const [isLoading, setIsLoading] = useState(false);
@@ -97,7 +98,7 @@ export default function LoginPage() {
       <div className="relative z-10 w-full max-w-md p-6">
         <div className="bg-white p-10 border border-gray-100 rounded-3xl shadow-[0_20px_60px_rgba(0,0,0,0.08)]">
           <div className="flex items-center justify-center mb-10">
-            <img src="/logo.png" alt="algoleap" className="h-14 w-auto object-contain" />
+            <Logo />
           </div>
 
           {/* Perspective Toggle (Hidden when OTP field is visible to avoid confusion) */}
