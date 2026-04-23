@@ -16,7 +16,7 @@ export const artifactSchema = z.object({
   description:    z.string().min(1, 'Description is required'),
   artifact_type:  z.string().min(1, 'Type is required'),
   service_line:   z.array(z.string()),
-  industry:       z.array(z.string()),
+  industry:       z.array(z.string()).min(1, 'Select at least one industry'),
   audience:       z.array(z.string()),
   tech_tags:      z.string().optional(), // Will split into array on save
   onedrive_url:   z.string().url('Must be a valid URL'),
@@ -199,7 +199,7 @@ export function ArtifactForm({ artifact, isOpen, onClose, onSuccess }: ArtifactF
 
               <div className="pt-2">
                 <MultiSelect name="service_line" options={SERVICE_LINES} label="Service Line" error={errors.service_line} />
-                <MultiSelect name="industry" options={INDUSTRIES} label="Industry" error={errors.industry} />
+                <MultiSelect name="industry" options={INDUSTRIES} label="Industry *" error={errors.industry} />
                 <MultiSelect name="audience" options={AUDIENCES} label="Audience" error={errors.audience} />
               </div>
 
