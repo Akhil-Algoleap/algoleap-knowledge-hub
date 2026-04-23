@@ -63,8 +63,13 @@ export function CatalogClient({ initialArtifacts, isAdmin }: { initialArtifacts:
       const matchesSearch = !searchQuery || [
         artifact.title,
         artifact.description || '',
-        ...(artifact.tech_tags || [])
-      ].some(field => field.toLowerCase().includes(searchQuery.toLowerCase()));
+        artifact.artifact_type,
+        artifact.owner_name || '',
+        ...artifact.service_line,
+        ...artifact.industry,
+        ...artifact.audience,
+        ...artifact.tech_tags
+      ].some(field => field && field.toLowerCase().includes(searchQuery.toLowerCase()));
 
       // Filter logic
       const matchesType = !filters.type || artifact.artifact_type === filters.type;

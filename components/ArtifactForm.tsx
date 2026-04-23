@@ -13,11 +13,11 @@ import { motion, AnimatePresence } from 'framer-motion';
 
 export const artifactSchema = z.object({
   title:          z.string().min(1, 'Title is required'),
-  description:    z.string().optional(),
+  description:    z.string().min(1, 'Description is required'),
   artifact_type:  z.string().min(1, 'Type is required'),
-  service_line:   z.array(z.string()).min(1, 'Select at least one service line'),
+  service_line:   z.array(z.string()),
   industry:       z.array(z.string()),
-  audience:       z.array(z.string()).min(1, 'Select at least one audience'),
+  audience:       z.array(z.string()),
   tech_tags:      z.string().optional(), // Will split into array on save
   onedrive_url:   z.string().url('Must be a valid URL'),
   owner_name:     z.string().min(1, 'Owner name is required'),
@@ -172,8 +172,9 @@ export function ArtifactForm({ artifact, isOpen, onClose, onSuccess }: ArtifactF
               </div>
               
               <div>
-                <Label>Description</Label>
+                <Label required>Description</Label>
                 <textarea {...register('description')} rows={3} placeholder="2-3 sentences describing what this is and when someone should use it." className={inputClasses} />
+                {errors.description && <p className="text-red-500 text-xs mt-1.5 font-medium">{errors.description.message}</p>}
               </div>
 
               <div>
@@ -197,9 +198,9 @@ export function ArtifactForm({ artifact, isOpen, onClose, onSuccess }: ArtifactF
               </div>
 
               <div className="pt-2">
-                <MultiSelect name="service_line" options={SERVICE_LINES} label="Service Line *" error={errors.service_line} />
+                <MultiSelect name="service_line" options={SERVICE_LINES} label="Service Line" error={errors.service_line} />
                 <MultiSelect name="industry" options={INDUSTRIES} label="Industry" error={errors.industry} />
-                <MultiSelect name="audience" options={AUDIENCES} label="Audience *" error={errors.audience} />
+                <MultiSelect name="audience" options={AUDIENCES} label="Audience" error={errors.audience} />
               </div>
 
               <div>

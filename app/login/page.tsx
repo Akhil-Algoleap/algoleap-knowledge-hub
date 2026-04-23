@@ -67,6 +67,15 @@ export default function LoginPage() {
             if (!session) throw error;
           }
           
+          // Ensure profile exists
+          const { data: { user } } = await supabase.auth.getUser();
+          if (user) {
+            await supabase.from('profiles').upsert({
+              id: user.id,
+              email: user.email,
+            }, { onConflict: 'id' });
+          }
+          
           window.location.href = '/';
         }
       }

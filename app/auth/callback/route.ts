@@ -35,9 +35,17 @@ export async function GET(request: Request) {
 
       const { data: { user } } = await supabase.auth.getUser()
       
-      if (user && !user.email?.endsWith('@algoleap.com')) {
-        await supabase.auth.signOut()
-        return NextResponse.redirect(`${origin}/login?error=Invalid domain`)
+      if (user) {
+        // Ensure profile exists
+        await supabase.from('profiles').upsert({
+          id: user.id,
+          email: user.email,
+        }, { onConflict: 'id' });
+
+        if (!user.email?.endsWith('@algoleap.com')) {
+          await supabase.auth.signOut()
+          return NextResponse.redirect(`${origin}/login?error=Invalid domain`)
+        }
       }
     } catch (error) {
       console.error('Auth callback error:', error)
