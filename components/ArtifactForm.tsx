@@ -109,9 +109,9 @@ export function ArtifactForm({ artifact, isOpen, onClose, onSuccess }: ArtifactF
                   else setValue(name, [...selected, opt]);
                 }}
                 className={cn(
-                  "px-4 py-1.5 rounded-full text-[13px] font-medium border transition-colors focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-[#19593A]",
+                  "px-4 py-1.5 rounded-full text-[13px] font-medium border transition-colors focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-[#3A7D44]",
                   isSelected 
-                    ? "bg-[#f0fdf6] border-[#19593A] text-[#19593A]" 
+                    ? "bg-[#f0fdf6] border-[#3A7D44] text-[#3A7D44]" 
                     : "bg-white border-gray-300 text-gray-700 hover:bg-gray-50 hover:border-gray-400"
                 )}
               >
@@ -131,7 +131,7 @@ export function ArtifactForm({ artifact, isOpen, onClose, onSuccess }: ArtifactF
     </label>
   );
 
-  const inputClasses = "w-full bg-white border border-gray-300 rounded-lg px-3 py-2.5 text-[14px] text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-[#19593A]/20 focus:border-[#19593A] transition-all shadow-[0_1px_2px_rgba(0,0,0,0.02)]";
+  const inputClasses = "w-full bg-white border border-gray-300 rounded-lg px-3 py-2.5 text-[14px] text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-[#3A7D44]/20 focus:border-[#3A7D44] transition-all shadow-[0_1px_2px_rgba(0,0,0,0.02)]";
 
   if (!isOpen) return null;
 
@@ -241,7 +241,7 @@ export function ArtifactForm({ artifact, isOpen, onClose, onSuccess }: ArtifactF
                     <label className="relative inline-flex items-center cursor-pointer gap-3">
                       <div className="relative">
                         <input type="checkbox" {...register('is_client_safe')} className="sr-only peer" />
-                        <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-[#19593A]/20 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#19593A]"></div>
+                        <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-[#3A7D44]/20 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#3A7D44]"></div>
                       </div>
                       <span className="text-[14px] font-medium text-gray-600">
                         {watch('is_client_safe') ? 'Yes — client-facing' : 'No — internal only'}
@@ -269,7 +269,7 @@ export function ArtifactForm({ artifact, isOpen, onClose, onSuccess }: ArtifactF
               type="submit" 
               form="artifactForm" 
               disabled={isSubmitting} 
-              className="flex-grow flex items-center justify-center gap-2 px-6 py-2.5 rounded-lg bg-[#19593A] text-white font-bold text-[14px] hover:bg-[#12422b] transition-colors shadow-sm disabled:opacity-70"
+              className="flex-grow flex items-center justify-center gap-2 px-6 py-2.5 rounded-lg bg-[#3A7D44] text-white font-bold text-[14px] hover:bg-[#2E6336] transition-colors shadow-sm disabled:opacity-70"
             >
               {isSubmitting ? 'Saving...' : (artifact ? 'Update Artifact' : 'Add Artifact')}
             </button>

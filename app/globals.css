@@ -1,9 +1,9 @@
 @import "tailwindcss";
 
 @theme {
-  --color-algoleap-green: #00FF88;
-  --color-algoleap-green-hover: #00CC6A;
-  --color-algoleap-dark: #19593A; /* Reserving for dark green header */
+  --color-algoleap-green: #3A7D44;
+  --color-algoleap-green-hover: #2E6336;
+  --color-algoleap-dark: #3A7D44; /* Reserving for dark green header */
   --color-algoleap-card: #FFFFFF;
   --color-algoleap-border: #E5E7EB;
   --color-algoleap-muted: #6B7280;
@@ -39,7 +39,7 @@
   }
 
   .primary-btn {
-    @apply text-white bg-[#19593A] hover:bg-[#12422b] transition-colors font-medium px-4 py-2 rounded-lg;
+    @apply text-white bg-[#3A7D44] hover:bg-[#2E6336] transition-colors font-medium px-4 py-2 rounded-lg;
   }
 
   .secondary-btn {

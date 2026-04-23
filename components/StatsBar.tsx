@@ -31,7 +31,7 @@ export function StatsBar({ artifacts, isAdmin }: StatsBarProps) {
   const cards = [
     { label: 'Total Artifacts', value: stats.total, color: 'text-slate-800', show: true },
     { label: 'Added This Month', value: stats.addedThisMonth, color: 'text-slate-800', show: true },
-    { label: 'Active', value: stats.active, color: 'text-[#19593A]', show: isAdmin },
+    { label: 'Active', value: stats.active, color: 'text-[#3A7D44]', show: isAdmin },
     { label: 'Needs Review', value: stats.needsReview, color: 'text-amber-600', show: isAdmin },
   ].filter(c => c.show);
 

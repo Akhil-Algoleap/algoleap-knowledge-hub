@@ -66,17 +66,17 @@ export function FilterSidebar({ artifacts, filters, onFilterChange, onClearFilte
                 className={cn(
                   "w-full text-left flex items-center justify-between py-1.5 px-2 -mx-2 rounded-lg text-[13px] font-medium transition-colors cursor-pointer",
                   isActive 
-                    ? "text-[#19593A] bg-green-50" 
+                    ? "text-[#3A7D44] bg-green-50" 
                     : "text-gray-600 hover:bg-gray-100 hover:text-gray-900"
                 )}
               >
                 <div className="flex items-center gap-2 truncate">
-                  {isActive && <span className="w-1.5 h-1.5 rounded-full bg-[#19593A] shrink-0"></span>}
+                  {isActive && <span className="w-1.5 h-1.5 rounded-full bg-[#3A7D44] shrink-0"></span>}
                   <span className="truncate">{opt}</span>
                 </div>
                 <span className={cn(
                   "text-[10px] py-0.5 px-2 rounded-full font-bold ml-2",
-                  isActive ? "bg-green-100 text-[#19593A]" : "bg-gray-100 text-gray-400"
+                  isActive ? "bg-green-100 text-[#3A7D44]" : "bg-gray-100 text-gray-400"
                 )}>
                   {countMap[opt] || 0}
                 </span>
@@ -92,13 +92,13 @@ export function FilterSidebar({ artifacts, filters, onFilterChange, onClearFilte
     <div className="w-full sticky top-6 pt-2 text-gray-800">
       <div className="flex items-center justify-between mb-6">
         <h2 className="text-sm font-bold flex items-center gap-2">
-          <Filter className="w-4 h-4 text-[#19593A]" />
+          <Filter className="w-4 h-4 text-[#3A7D44]" />
           Filters
         </h2>
         {hasActiveFilters && (
           <button 
             onClick={onClearFilters}
-            className="text-[11px] font-bold text-[#19593A] hover:text-[#00CC6A] transition-colors uppercase tracking-wider"
+            className="text-[11px] font-bold text-[#3A7D44] hover:text-[#2E6336] transition-colors uppercase tracking-wider"
           >
             Clear All
           </button>
@@ -135,15 +135,15 @@ export function FilterSidebar({ artifacts, filters, onFilterChange, onClearFilte
                   className={cn(
                     "w-full text-left flex items-center justify-between py-1.5 px-2 -mx-2 rounded-lg text-[13px] font-medium transition-colors cursor-pointer",
                     filters.status === 'current' 
-                      ? "text-[#19593A] bg-green-50" 
+                      ? "text-[#3A7D44] bg-green-50" 
                       : "text-gray-600 hover:bg-gray-100 hover:text-gray-900"
                   )}
                 >
                   <span className="flex items-center gap-2">
-                    <span className={cn("w-1.5 h-1.5 rounded-full shrink-0", filters.status === 'current' ? "bg-[#19593A]" : "bg-green-500")}></span>
+                    <span className={cn("w-1.5 h-1.5 rounded-full shrink-0", filters.status === 'current' ? "bg-[#3A7D44]" : "bg-green-500")}></span>
                     Current
                   </span>
-                  <span className={cn("text-[10px] py-0.5 px-2 rounded-full font-bold ml-2", filters.status === 'current' ? "bg-green-100 text-[#19593A]" : "bg-gray-100 text-gray-400")}>{counts.current}</span>
+                  <span className={cn("text-[10px] py-0.5 px-2 rounded-full font-bold ml-2", filters.status === 'current' ? "bg-green-100 text-[#3A7D44]" : "bg-gray-100 text-gray-400")}>{counts.current}</span>
                 </button>
               </li>
               <li>

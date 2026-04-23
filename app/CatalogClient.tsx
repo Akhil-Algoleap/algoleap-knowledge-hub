@@ -99,12 +99,12 @@ export function CatalogClient({ initialArtifacts, isAdmin }: { initialArtifacts:
         <div className="flex items-center gap-3">
           {isAdmin && (
             <>
-              <Link href="/admin" className="flex items-center gap-2 text-gray-600 hover:text-[#19593A] transition-colors text-sm font-bold mr-2">
+              <Link href="/admin" className="flex items-center gap-2 text-gray-600 hover:text-[#3A7D44] transition-colors text-sm font-bold mr-2">
                 <Settings className="w-4 h-4" /> Admin
               </Link>
               <button 
                 onClick={() => setIsFormOpen(true)}
-                className="flex items-center gap-1 bg-algoleap-green hover:bg-[#00CC6A] text-[#19593A] font-bold px-4 py-1.5 text-sm rounded transition-colors"
+                className="flex items-center gap-1 bg-algoleap-green hover:bg-[#2E6336] text-[#3A7D44] font-bold px-4 py-1.5 text-sm rounded transition-colors"
               >
                 <Plus className="w-4 h-4" /> Add Artifact
               </button>

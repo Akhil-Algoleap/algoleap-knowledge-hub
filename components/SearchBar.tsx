@@ -33,7 +33,7 @@ export function SearchBar({
         </div>
         <input
           type="text"
-          className="block w-full pl-10 pr-3 py-3 border border-gray-200 rounded-xl leading-5 bg-white text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-[#19593A] focus:border-[#19593A] sm:text-sm transition-all shadow-sm"
+          className="block w-full pl-10 pr-3 py-3 border border-gray-200 rounded-xl leading-5 bg-white text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-[#3A7D44] focus:border-[#3A7D44] sm:text-sm transition-all shadow-sm"
           placeholder="Search artifacts by title, description, or tech tags..."
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
@@ -46,7 +46,7 @@ export function SearchBar({
           className={cn(
             "p-2 rounded-lg flex items-center justify-center transition-all",
             viewMode === 'grid' 
-              ? "bg-[#19593A] text-white shadow-sm" 
+              ? "bg-[#3A7D44] text-white shadow-sm" 
               : "text-gray-400 hover:text-gray-700 hover:bg-gray-50"
           )}
           aria-label="Grid view"
@@ -58,7 +58,7 @@ export function SearchBar({
           className={cn(
             "p-2 rounded-lg flex items-center justify-center transition-all",
             viewMode === 'list' 
-              ? "bg-[#19593A] text-white shadow-sm" 
+              ? "bg-[#3A7D44] text-white shadow-sm" 
               : "text-gray-400 hover:text-gray-700 hover:bg-gray-50"
           )}
           aria-label="List view"
@@ -73,7 +73,7 @@ export function SearchBar({
           {activeFilters.map(([key, value]) => (
             <div 
               key={key} 
-              className="flex items-center gap-1.5 bg-green-50 border border-green-100 text-[#19593A] px-2.5 py-1 rounded-full text-xs font-semibold animate-in fade-in slide-in-from-top-1 duration-200 shadow-sm"
+              className="flex items-center gap-1.5 bg-green-50 border border-green-100 text-[#3A7D44] px-2.5 py-1 rounded-full text-xs font-semibold animate-in fade-in slide-in-from-top-1 duration-200 shadow-sm"
             >
               <span className="opacity-60">{key.toUpperCase()}:</span>
               {value}
@@ -89,7 +89,7 @@ export function SearchBar({
           {hasMultipleFilters && (
             <button 
               onClick={onClearFilters}
-              className="text-xs text-gray-500 hover:text-[#19593A] font-medium ml-1 underline transition-colors"
+              className="text-xs text-gray-500 hover:text-[#3A7D44] font-medium ml-1 underline transition-colors"
             >
               Clear all
             </button>

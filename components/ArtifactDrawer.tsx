@@ -58,7 +58,7 @@ export function ArtifactDrawer({ artifact, onClose, isAdmin }: ArtifactDrawerPro
               {/* Primary Action */}
               <button 
                 onClick={() => window.open(artifact.onedrive_url, '_blank', 'noopener noreferrer')}
-                className="w-full bg-[#19593A] hover:bg-[#12422b] text-white flex items-center justify-center gap-2 py-4 rounded-xl text-lg font-bold shadow-sm transition-colors"
+                className="w-full bg-[#3A7D44] hover:bg-[#2E6336] text-white flex items-center justify-center gap-2 py-4 rounded-xl text-lg font-bold shadow-sm transition-colors"
               >
                 Open in OneDrive <ExternalLink className="h-5 w-5" />
               </button>
@@ -70,7 +70,7 @@ export function ArtifactDrawer({ artifact, onClose, isAdmin }: ArtifactDrawerPro
                     {artifact.artifact_type}
                   </span>
                   {artifact.is_client_safe && (
-                    <span className="px-3 py-1 rounded-full text-xs font-bold bg-green-50 text-[#19593A] border border-green-200 flex items-center gap-1.5">
+                    <span className="px-3 py-1 rounded-full text-xs font-bold bg-green-50 text-[#3A7D44] border border-green-200 flex items-center gap-1.5">
                       <ShieldCheck className="h-3.5 w-3.5" /> Client Safe
                     </span>
                   )}
@@ -96,7 +96,7 @@ export function ArtifactDrawer({ artifact, onClose, isAdmin }: ArtifactDrawerPro
                     </div>
                     <p className="text-gray-900 font-bold">{artifact.owner_name}</p>
                     {artifact.owner_email && (
-                      <a href={`mailto:${artifact.owner_email}`} className="text-[13px] text-[#19593A] hover:underline flex items-center gap-1 mt-1 font-medium">
+                      <a href={`mailto:${artifact.owner_email}`} className="text-[13px] text-[#3A7D44] hover:underline flex items-center gap-1 mt-1 font-medium">
                         <Mail className="h-3.5 w-3.5" /> {artifact.owner_email}
                       </a>
                     )}

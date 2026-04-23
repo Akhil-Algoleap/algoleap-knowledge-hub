@@ -108,7 +108,7 @@ export default function LoginPage() {
                 onClick={() => { setAuthMode('employee'); setMessage(null); }}
                 className={cn(
                   "flex-1 py-3 text-[13px] font-bold rounded-xl transition-all",
-                  authMode === 'employee' ? "bg-white text-[#19593A] shadow-sm" : "text-gray-500 hover:text-gray-900"
+                  authMode === 'employee' ? "bg-white text-[#3A7D44] shadow-sm" : "text-gray-500 hover:text-gray-900"
                 )}
               >
                 Employee Access
@@ -117,7 +117,7 @@ export default function LoginPage() {
                 onClick={() => { setAuthMode('admin'); setMessage(null); }}
                 className={cn(
                   "flex-1 py-3 text-[13px] font-bold rounded-xl transition-all",
-                  authMode === 'admin' ? "bg-[#19593A] text-white shadow-sm" : "text-gray-500 hover:text-gray-900"
+                  authMode === 'admin' ? "bg-[#3A7D44] text-white shadow-sm" : "text-gray-500 hover:text-gray-900"
                 )}
               >
                 Admin Console
@@ -138,7 +138,7 @@ export default function LoginPage() {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder={authMode === 'admin' ? 'admin@algoleap.com' : 'name@algoleap.com'}
-                    className="w-full bg-white border border-gray-200 rounded-2xl px-5 py-4 text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-[#19593A]/10 focus:border-[#19593A] transition-all"
+                    className="w-full bg-white border border-gray-200 rounded-2xl px-5 py-4 text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-[#3A7D44]/10 focus:border-[#3A7D44] transition-all"
                   />
                 </div>
 
@@ -153,7 +153,7 @@ export default function LoginPage() {
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
                       placeholder="••••••••"
-                      className="w-full bg-white border border-gray-200 rounded-2xl px-5 py-4 text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-[#19593A]/10 focus:border-[#19593A] transition-all"
+                      className="w-full bg-white border border-gray-200 rounded-2xl px-5 py-4 text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-[#3A7D44]/10 focus:border-[#3A7D44] transition-all"
                     />
                   </div>
                 )}
@@ -161,7 +161,7 @@ export default function LoginPage() {
             ) : (
               <div className="space-y-4 animate-in zoom-in-95 duration-500">
                 <div className="space-y-2">
-                  <label className="text-[11px] font-bold text-[#00FF88] uppercase tracking-[0.2em] px-1">
+                  <label className="text-[11px] font-bold text-[#3A7D44] uppercase tracking-[0.2em] px-1">
                     Verification Code
                   </label>
                   <input 
@@ -171,11 +171,11 @@ export default function LoginPage() {
                     value={otp}
                     onChange={(e) => setOtp(e.target.value)}
                     placeholder="000000"
-                    className="w-full bg-gray-50 border border-gray-200 rounded-2xl px-5 py-6 text-center text-3xl font-black tracking-[0.5em] text-[#19593A] placeholder:text-gray-300 focus:outline-none focus:ring-4 focus:ring-[#19593A]/5 focus:border-[#19593A] transition-all"
+                    className="w-full bg-gray-50 border border-gray-200 rounded-2xl px-5 py-6 text-center text-3xl font-black tracking-[0.5em] text-[#3A7D44] placeholder:text-gray-300 focus:outline-none focus:ring-4 focus:ring-[#3A7D44]/5 focus:border-[#3A7D44] transition-all"
                   />
                   <p className="text-[10px] text-gray-500 text-center mt-3 px-4 italic leading-relaxed">
                     Type the verification code found in your email. <br/>
-                    <span className="text-[#00FF88]/70">Do not click the link</span> if you are on a different device.
+                    <span className="text-[#3A7D44]/70">Do not click the link</span> if you are on a different device.
                   </p>
                 </div>
                 <button 
@@ -194,8 +194,8 @@ export default function LoginPage() {
               className={cn(
                 "w-full py-4.5 rounded-2xl font-black text-[14px] uppercase tracking-wider transition-all disabled:opacity-50",
                 authMode === 'admin' 
-                  ? "bg-[#19593A] text-white hover:bg-[#12422b]" 
-                  : "bg-[#19593A] text-white hover:bg-[#12422b]"
+                  ? "bg-[#3A7D44] text-white hover:bg-[#2E6336]" 
+                  : "bg-[#3A7D44] text-white hover:bg-[#2E6336]"
               )}
             >
               {isLoading ? 'Processing...' : (
@@ -207,7 +207,7 @@ export default function LoginPage() {
           {message && (
             <div className={cn(
               "mt-8 p-4 rounded-2xl text-[13px] font-semibold border animate-in zoom-in-95 duration-300 text-center",
-              message.type === 'error' ? "bg-red-500/10 border-red-500/20 text-red-400" : "bg-[#00FF88]/10 border-[#00FF88]/20 text-[#00FF88]"
+              message.type === 'error' ? "bg-red-500/10 border-red-500/20 text-red-400" : "bg-[#3A7D44]/10 border-[#3A7D44]/20 text-[#3A7D44]"
             )}>
               {message.type === 'error' && authMode === 'admin' && message.text === 'Invalid login credentials' ? (
                 <>

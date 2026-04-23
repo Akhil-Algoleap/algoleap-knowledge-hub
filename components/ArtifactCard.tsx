@@ -48,13 +48,13 @@ export function ArtifactCard({ artifact, onSelect, viewMode, isAdmin }: Artifact
               {artifact.artifact_type}
             </span>
             {artifact.is_client_safe && (
-              <span className="px-3 py-1 rounded-full text-xs font-semibold border bg-green-50 text-[#19593A] border-green-200">
+              <span className="px-3 py-1 rounded-full text-xs font-semibold border bg-green-50 text-[#3A7D44] border-green-200">
                 Client Safe
               </span>
             )}
           </div>
           <div className="min-w-0 flex-grow">
-            <h3 className="text-gray-900 font-bold truncate group-hover:text-[#19593A] transition-colors">
+            <h3 className="text-gray-900 font-bold truncate group-hover:text-[#3A7D44] transition-colors">
               {artifact.title}
             </h3>
             <p className="text-sm text-gray-500 truncate mt-0.5" suppressHydrationWarning>
@@ -71,7 +71,7 @@ export function ArtifactCard({ artifact, onSelect, viewMode, isAdmin }: Artifact
           )}
           <button 
             onClick={handleOpen}
-            className="flex items-center gap-1.5 py-1.5 px-3 text-sm font-semibold text-[#19593A] bg-green-50 border border-green-200 rounded-lg hover:bg-green-100 transition-colors"
+            className="flex items-center gap-1.5 py-1.5 px-3 text-sm font-semibold text-[#3A7D44] bg-green-50 border border-green-200 rounded-lg hover:bg-green-100 transition-colors"
           >
             Open <ExternalLink className="h-3.5 w-3.5" />
           </button>
@@ -92,7 +92,7 @@ export function ArtifactCard({ artifact, onSelect, viewMode, isAdmin }: Artifact
               {artifact.artifact_type}
             </span>
             {artifact.is_client_safe && (
-              <span className="px-3 py-1 rounded-full text-[11px] tracking-wide font-bold border bg-green-50 text-[#19593A] border-green-200">
+              <span className="px-3 py-1 rounded-full text-[11px] tracking-wide font-bold border bg-green-50 text-[#3A7D44] border-green-200">
                 Client Safe
               </span>
             )}
@@ -104,7 +104,7 @@ export function ArtifactCard({ artifact, onSelect, viewMode, isAdmin }: Artifact
           )}
         </div>
         
-        <h3 className="text-base font-bold text-gray-900 mb-2 line-clamp-2 leading-snug group-hover:text-[#19593A] transition-colors pt-1">
+        <h3 className="text-base font-bold text-gray-900 mb-2 line-clamp-2 leading-snug group-hover:text-[#3A7D44] transition-colors pt-1">
           {artifact.title}
         </h3>
         
@@ -139,7 +139,7 @@ export function ArtifactCard({ artifact, onSelect, viewMode, isAdmin }: Artifact
         </div>
         <button 
           onClick={handleOpen}
-          className="flex items-center gap-1.5 py-1.5 px-3 text-[13px] font-bold text-[#19593A] bg-green-50 border border-green-200 rounded-lg hover:bg-[#19593A] hover:text-white hover:border-[#19593A] transition-colors"
+          className="flex items-center gap-1.5 py-1.5 px-3 text-[13px] font-bold text-[#3A7D44] bg-green-50 border border-green-200 rounded-lg hover:bg-[#3A7D44] hover:text-white hover:border-[#3A7D44] transition-colors"
         >
           Open <ExternalLink className="h-3.5 w-3.5" />
         </button>
