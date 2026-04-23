@@ -149,14 +149,14 @@ export default function LoginPage() {
                 {authMode === 'admin' && (
                   <div className="space-y-2 animate-in fade-in slide-in-from-top-2 duration-400">
                     <label className="text-[11px] font-bold text-gray-400 uppercase tracking-[0.2em] px-1 blur-[0.2px]">
-                      Secret Code
+                      Password
                     </label>
                     <input 
-                      type="text"
+                      type="password"
                       required
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
-                      placeholder="@Algoleap54321"
+                      placeholder="••••••••"
                       className="w-full bg-black/40 border border-white/10 rounded-2xl px-5 py-4 text-white placeholder:text-gray-700 focus:outline-none focus:ring-2 focus:ring-[#00FF88]/20 focus:border-[#00FF88] transition-all"
                     />
                   </div>
