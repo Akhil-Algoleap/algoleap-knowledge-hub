@@ -104,7 +104,7 @@ export function CatalogClient({ initialArtifacts, isAdmin }: { initialArtifacts:
               </Link>
               <button 
                 onClick={() => setIsFormOpen(true)}
-                className="flex items-center gap-1 bg-algoleap-green hover:bg-[#2E6336] text-[#3A7D44] font-bold px-4 py-1.5 text-sm rounded transition-colors"
+                className="flex items-center gap-1 bg-[#3A7D44] hover:bg-[#2E6336] text-white font-bold px-4 py-1.5 text-sm rounded transition-colors"
               >
                 <Plus className="w-4 h-4" /> Add Artifact
               </button>
