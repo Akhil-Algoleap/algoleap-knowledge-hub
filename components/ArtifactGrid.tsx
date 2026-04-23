@@ -11,6 +11,7 @@ interface ArtifactGridProps {
   artifacts: Artifact[];
   filters: FilterState;
   searchQuery: string;
+  viewMode: 'grid' | 'list';
   onSelectArtifact: (artifact: Artifact) => void;
   isAdmin?: boolean;
 }
