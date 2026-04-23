@@ -171,10 +171,10 @@ export default function LoginPage() {
                   <input 
                     type="text"
                     required
-                    maxLength={8}
+                    maxLength={6}
                     value={otp}
                     onChange={(e) => setOtp(e.target.value)}
-                    placeholder="00000000"
+                    placeholder="000000"
                     className="w-full bg-black/40 border border-[#00FF88]/20 rounded-2xl px-5 py-6 text-center text-3xl font-black tracking-[0.5em] text-[#00FF88] placeholder:text-gray-800 focus:outline-none focus:ring-4 focus:ring-[#00FF88]/10 focus:border-[#00FF88] transition-all"
                   />
                   <p className="text-[10px] text-gray-500 text-center mt-3 px-4 italic leading-relaxed">
