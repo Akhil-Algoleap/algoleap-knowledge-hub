@@ -40,45 +40,58 @@ export default function LoginPage() {
         if (error) throw error;
         window.location.href = '/';
       } else {
-        // Employee logic
-        if (!showOtp) {
-          // Stage 1: Send Code
-          if (!email.endsWith('@algoleap.com')) throw new Error('Only @algoleap.com emails are authorized.');
-          
-          const { error } = await supabase.auth.signInWithOtp({ email });
-          if (error) throw error;
-          
-          setShowOtp(true);
-          setMessage({ type: 'success', text: '6-digit code sent to your email.' });
-        } else {
-          // Stage 2: Verify Code
-          
-          // Set perspective cookie
-          document.cookie = `preferred_role=viewer; path=/; max-age=3600; SameSite=Lax`;
-          
-          const { error } = await supabase.auth.verifyOtp({
-            email,
-            token: otp,
-            type: 'email'
-          });
+        // --- NEW SEAMLESS EMPLOYEE LOGIC ---
+        // 1. Verify if the email is in our whitelist table
+        const { data: whitelist, error: whitelistError } = await supabase
+          .from('employees')
+          .select('email')
+          .eq('email', email)
+          .single();
 
-          if (error) {
-            // Check if we actually got logged in despite the error (common with late responses or race conditions)
-            const { data: { session } } = await supabase.auth.getSession();
-            if (!session) throw error;
-          }
-          
-          // Ensure profile exists
-          const { data: { user } } = await supabase.auth.getUser();
-          if (user) {
-            await supabase.from('profiles').upsert({
-              id: user.id,
-              email: user.email,
-            }, { onConflict: 'id' });
-          }
-          
-          window.location.href = '/';
+        if (whitelistError || !whitelist) {
+          throw new Error('Access Denied. Your email is not in the authorized employee directory.');
         }
+
+        // 2. Set perspective cookie
+        document.cookie = `preferred_role=viewer; path=/; max-age=3600; SameSite=Lax`;
+
+        const SHARED_PASSWORD = '@AlgoleapEmployee2026';
+
+        // 3. Try to Sign In with the shared password
+        let { error: signInError } = await supabase.auth.signInWithPassword({
+          email,
+          password: SHARED_PASSWORD
+        });
+
+        // 4. If user doesn't exist yet, Auto-Sign Up (this works because "Confirm Email" is OFF in Supabase)
+        if (signInError && signInError.message.includes('Invalid login credentials')) {
+          const { error: signUpError } = await supabase.auth.signUp({
+            email,
+            password: SHARED_PASSWORD
+          });
+          
+          if (signUpError) throw signUpError;
+          
+          // Try signing in again after signup
+          const { error: retryError } = await supabase.auth.signInWithPassword({
+            email,
+            password: SHARED_PASSWORD
+          });
+          if (retryError) throw retryError;
+        } else if (signInError) {
+          throw signInError;
+        }
+
+        // 5. Ensure profile exists
+        const { data: { user } } = await supabase.auth.getUser();
+        if (user) {
+          await supabase.from('profiles').upsert({
+            id: user.id,
+            email: user.email,
+          }, { onConflict: 'id' });
+        }
+        
+        window.location.href = '/';
       }
     } catch (err: any) {
       setMessage({ type: 'error', text: err.message });
@@ -199,7 +212,7 @@ export default function LoginPage() {
               )}
             >
               {isLoading ? 'Processing...' : (
-                showOtp ? 'Verify Identity' : (authMode === 'admin' ? 'Enter Console' : 'Send Code')
+                showOtp ? 'Verify Identity' : (authMode === 'admin' ? 'Enter Console' : 'Login to Portal')
               )}
             </button>
           </form>

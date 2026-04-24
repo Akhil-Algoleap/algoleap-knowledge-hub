@@ -3,7 +3,7 @@ import { redirect } from 'next/navigation';
 import { AdminTable } from '@/components/AdminTable';
 import Link from 'next/link';
 import { ArrowLeft } from 'lucide-react';
-import { cookies } from 'next/headers';
+
 export default async function AdminPage() {
   const supabase = await createServerSupabase();
   
