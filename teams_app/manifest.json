@@ -1,0 +1,43 @@
+{
+  "$schema": "https://developer.microsoft.com/en-us/json-schemas/teams/v1.15/MicrosoftTeams.schema.json",
+  "manifestVersion": "1.15",
+  "version": "1.0.0",
+  "id": "c9a47332-6b94-4d66-8874-975ae64de71c",
+  "packageName": "com.algoleap.knowledgehub",
+  "developer": {
+    "name": "Algoleap Technologies",
+    "websiteUrl": "https://www.algoleap.com",
+    "privacyUrl": "https://www.algoleap.com/privacy",
+    "termsOfUseUrl": "https://www.algoleap.com/terms"
+  },
+  "icons": {
+    "color": "color.png",
+    "outline": "outline.png"
+  },
+  "name": {
+    "short": "Knowledge Hub",
+    "full": "Algoleap Knowledge Hub"
+  },
+  "description": {
+    "short": "Searchable artifact catalog for Algoleap.",
+    "full": "The Algoleap Knowledge Hub is a centralized portal for browsing and managing project artifacts, case studies, and templates."
+  },
+  "accentColor": "#3A7D44",
+  "staticTabs": [
+    {
+      "entityId": "knowledgehub-tab",
+      "name": "Knowledge Hub",
+      "contentUrl": "https://algoleap-knowledge-hub.vercel.app",
+      "websiteUrl": "https://algoleap-knowledge-hub.vercel.app",
+      "scopes": ["personal"]
+    }
+  ],
+  "permissions": [
+    "identity",
+    "messageTeamMembers"
+  ],
+  "validDomains": [
+    "algoleap-knowledge-hub.vercel.app",
+    "*.algoleap.com"
+  ]
+}
