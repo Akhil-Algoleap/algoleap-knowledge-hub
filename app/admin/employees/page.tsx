@@ -1,10 +1,11 @@
 import { createServerSupabase } from '@/lib/supabase/server';
 import { redirect } from 'next/navigation';
-import { AdminTable } from '@/components/AdminTable';
+import { EmployeeTable } from '@/components/EmployeeTable';
 import Link from 'next/link';
 import { ArrowLeft, ShieldCheck } from 'lucide-react';
+import { Employee } from '@/lib/types';
 
-export default async function AdminPage() {
+export default async function EmployeeAdminPage() {
   const supabase = await createServerSupabase();
   
   // Get real user session
@@ -29,13 +30,13 @@ export default async function AdminPage() {
     redirect('/');
   }
 
-  const { data: artifacts, error } = await supabase
-    .from('artifacts')
+  const { data: employees, error } = await supabase
+    .from('employees')
     .select('*')
     .order('created_at', { ascending: false });
 
   if (error) {
-    console.error("Error fetching admin artifacts:", error);
+    console.error("Error fetching employees:", error);
   }
 
   return (
@@ -43,21 +44,20 @@ export default async function AdminPage() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         <header className="mb-8 border-b border-white/10 pb-6">
-          <Link href="/" className="inline-flex items-center gap-2 text-algoleap-green hover:text-algoleap-green-hover mb-4 transition-colors font-medium text-sm">
-            <ArrowLeft className="h-4 w-4" /> Back to Catalog
+          <Link href="/admin" className="inline-flex items-center gap-2 text-algoleap-green hover:text-algoleap-green-hover mb-4 transition-colors font-medium text-sm">
+            <ArrowLeft className="h-4 w-4" /> Back to Admin Console
           </Link>
           <div className="flex items-center justify-between">
             <div>
-              <h1 className="text-3xl font-bold text-white tracking-tight">Admin Console</h1>
-              <p className="text-algoleap-muted mt-1">Manage knowledge hub assets and metadata.</p>
+              <h1 className="text-3xl font-bold text-white tracking-tight flex items-center gap-3">
+                <ShieldCheck className="h-8 w-8 text-algoleap-green" /> Access Control
+              </h1>
+              <p className="text-algoleap-muted mt-1">Manage the whitelist of employees who can access the Knowledge Hub.</p>
             </div>
-            <Link href="/admin/employees" className="flex items-center gap-2 bg-white/5 hover:bg-white/10 text-white px-4 py-2 rounded-lg border border-white/10 transition-all font-medium text-sm">
-              <ShieldCheck className="h-4 w-4 text-algoleap-green" /> Manage Access
-            </Link>
           </div>
         </header>
 
-        <AdminTable initialArtifacts={artifacts ?? []} />
+        <EmployeeTable initialEmployees={(employees as Employee[]) ?? []} />
 
       </div>
     </main>

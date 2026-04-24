@@ -92,7 +92,7 @@ export function CatalogClient({ initialArtifacts, isAdmin }: { initialArtifacts:
       {/* Top Header */}
       <header className="bg-white border-b border-gray-200 py-4 px-6 flex justify-between items-center w-full shadow-sm sticky top-0 z-40">
         <div className="flex items-center gap-4">
-          <Logo className="scale-75 origin-left" />
+          <Logo className="h-8" showText={false} />
           <div className="h-6 w-px bg-gray-200 mx-1 hidden sm:block"></div>
           <span className="font-bold text-gray-800 text-[16px] hidden sm:block tracking-tight">Knowledge Hub</span>
         </div>
