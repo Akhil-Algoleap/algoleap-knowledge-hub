@@ -9,11 +9,13 @@ interface LogoProps {
 
 export function Logo({ className, size = 'md' }: LogoProps) {
   const S = size === 'sm' ? 28 : size === 'lg' ? 44 : 36;
-  const fontSize = S * 0.80;
-  const gap = S * 0.35;
-  const totalWidth = S + gap + fontSize * 4.6;
-  const strokeW = S * 0.07; // border thickness
+  const fontSize = S * 0.78;
+  const gap = S * 0.32;
+  const textWidth = fontSize * 4.6;
+  const totalWidth = S + gap + textWidth;
+  
   const green = '#3A7D44';
+  const symbolCream = '#EEF2D1'; // The cream/light-lime color from image 2
 
   return (
     <svg
@@ -24,48 +26,47 @@ export function Logo({ className, size = 'md' }: LogoProps) {
       className={cn('select-none flex-shrink-0', className)}
       aria-label="Algoleap"
     >
-      {/* Outlined rounded square — white fill, green border */}
+      {/* Solid green square with very rounded corners (approx 28% radius) */}
       <rect
-        x={strokeW / 2}
-        y={strokeW / 2}
-        width={S - strokeW}
-        height={S - strokeW}
-        rx={S * 0.24}
-        ry={S * 0.24}
-        fill="white"
-        stroke={green}
-        strokeWidth={strokeW}
+        x="0"
+        y="0"
+        width={S}
+        height={S}
+        rx={S * 0.28}
+        ry={S * 0.28}
+        fill={green}
       />
 
-      {/* Green play triangle */}
-      <polygon
-        points={`
-          ${S * 0.20},${S * 0.22}
-          ${S * 0.62},${S * 0.50}
-          ${S * 0.20},${S * 0.78}
+      {/* Symbol: Triangle (Play) - slightly rounded tips */}
+      <path
+        d={`
+          M ${S * 0.24} ${S * 0.26}
+          L ${S * 0.60} ${S * 0.50}
+          L ${S * 0.24} ${S * 0.74}
+          Z
         `}
-        fill={green}
+        fill={symbolCream}
       />
 
-      {/* Green vertical bar */}
+      {/* Symbol: Vertical Bar - slightly rounded */}
       <rect
-        x={S * 0.65}
-        y={S * 0.22}
-        width={S * 0.14}
-        height={S * 0.56}
+        x={S * 0.64}
+        y={S * 0.26}
+        width={S * 0.12}
+        height={S * 0.48}
         rx={S * 0.03}
-        fill={green}
+        fill={symbolCream}
       />
 
-      {/* algoleap text */}
+      {/* algoleap text - Bold, green, tight tracking */}
       <text
         x={S + gap}
-        y={S * 0.755}
-        fontFamily="'Segoe UI', 'Inter', 'Helvetica Neue', Arial, sans-serif"
+        y={S * 0.76}
+        fontFamily="'Inter', 'Segoe UI', Arial, sans-serif"
         fontWeight="800"
         fontSize={fontSize}
         fill={green}
-        letterSpacing="-0.8"
+        letterSpacing="-0.6"
       >
         algoleap
       </text>
