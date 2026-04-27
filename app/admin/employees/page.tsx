@@ -4,6 +4,7 @@ import { EmployeeTable } from '@/components/EmployeeTable';
 import Link from 'next/link';
 import { ArrowLeft, ShieldCheck } from 'lucide-react';
 import { Employee } from '@/lib/types';
+import { Logo } from '@/components/Logo';
 
 export default async function EmployeeAdminPage() {
   const supabase = await createServerSupabase();
@@ -48,11 +49,15 @@ export default async function EmployeeAdminPage() {
             <ArrowLeft className="h-4 w-4" /> Back to Admin Console
           </Link>
           <div className="flex items-center justify-between">
-            <div>
-              <h1 className="text-3xl font-bold text-white tracking-tight flex items-center gap-3">
-                <ShieldCheck className="h-8 w-8 text-algoleap-green" /> Access Control
-              </h1>
-              <p className="text-algoleap-muted mt-1">Manage the whitelist of employees who can access the Knowledge Hub.</p>
+            <div className="flex items-center gap-6">
+              <Logo className="h-10" />
+              <div className="h-10 w-px bg-white/10 hidden sm:block"></div>
+              <div>
+                <h1 className="text-3xl font-bold text-white tracking-tight flex items-center gap-3">
+                  <ShieldCheck className="h-8 w-8 text-algoleap-green" /> Access Control
+                </h1>
+                <p className="text-algoleap-muted mt-1">Manage the whitelist of employees who can access the Knowledge Hub.</p>
+              </div>
             </div>
           </div>
         </header>

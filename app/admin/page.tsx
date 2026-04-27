@@ -3,6 +3,7 @@ import { redirect } from 'next/navigation';
 import { AdminTable } from '@/components/AdminTable';
 import Link from 'next/link';
 import { ArrowLeft, ShieldCheck } from 'lucide-react';
+import { Logo } from '@/components/Logo';
 
 export default async function AdminPage() {
   const supabase = await createServerSupabase();
@@ -47,9 +48,13 @@ export default async function AdminPage() {
             <ArrowLeft className="h-4 w-4" /> Back to Catalog
           </Link>
           <div className="flex items-center justify-between">
-            <div>
-              <h1 className="text-3xl font-bold text-white tracking-tight">Admin Console</h1>
-              <p className="text-algoleap-muted mt-1">Manage knowledge hub assets and metadata.</p>
+            <div className="flex items-center gap-6">
+              <Logo className="h-10" />
+              <div className="h-10 w-px bg-white/10 hidden sm:block"></div>
+              <div>
+                <h1 className="text-3xl font-bold text-white tracking-tight">Admin Console</h1>
+                <p className="text-algoleap-muted mt-1">Manage knowledge hub assets and metadata.</p>
+              </div>
             </div>
             <Link href="/admin/employees" className="flex items-center gap-2 bg-white/5 hover:bg-white/10 text-white px-4 py-2 rounded-lg border border-white/10 transition-all font-medium text-sm">
               <ShieldCheck className="h-4 w-4 text-algoleap-green" /> Manage Access
