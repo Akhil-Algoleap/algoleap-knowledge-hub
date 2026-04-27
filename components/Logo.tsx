@@ -14,9 +14,10 @@ export function Logo({ className, size = 'md' }: LogoProps) {
   const textWidth = fontSize * 4.6;
   const totalWidth = iconSize + gap + textWidth;
   const h = iconSize;
+  const S = iconSize; // shorthand
 
-  // Symbol fill: light lime-green/cream matching reference image
-  const symbolColor = '#C5E09A';
+  // Light lime-green matching the reference image icon exactly
+  const sym = '#A8D870';
 
   return (
     <svg
@@ -27,37 +28,37 @@ export function Logo({ className, size = 'md' }: LogoProps) {
       className={cn('select-none flex-shrink-0', className)}
       aria-label="Algoleap"
     >
-      {/* Green rounded square - more rounded corners like image 1 */}
+      {/* Very rounded green square — matches reference */}
       <rect
         x="0" y="0"
-        width={iconSize} height={iconSize}
-        rx={iconSize * 0.24} ry={iconSize * 0.24}
-        fill="#3A7D44"
+        width={S} height={S}
+        rx={S * 0.27} ry={S * 0.27}
+        fill="#3D8B46"
       />
 
-      {/* Large play triangle - fills most of the icon like image 1 */}
+      {/* Large play triangle */}
       <polygon
         points={`
-          ${iconSize * 0.15},${iconSize * 0.18}
-          ${iconSize * 0.63},${iconSize * 0.50}
-          ${iconSize * 0.15},${iconSize * 0.82}
+          ${S * 0.17},${S * 0.19}
+          ${S * 0.61},${S * 0.50}
+          ${S * 0.17},${S * 0.81}
         `}
-        fill={symbolColor}
+        fill={sym}
       />
 
-      {/* Thick vertical bar on the right */}
+      {/* Bold vertical bar */}
       <rect
-        x={iconSize * 0.66}
-        y={iconSize * 0.18}
-        width={iconSize * 0.16}
-        height={iconSize * 0.64}
-        rx={iconSize * 0.03}
-        fill={symbolColor}
+        x={S * 0.64}
+        y={S * 0.19}
+        width={S * 0.18}
+        height={S * 0.62}
+        rx={S * 0.04}
+        fill={sym}
       />
 
       {/* algoleap text */}
       <text
-        x={iconSize + gap}
+        x={S + gap}
         y={h * 0.755}
         fontFamily="'Segoe UI', 'Inter', 'Helvetica Neue', Arial, sans-serif"
         fontWeight="800"
