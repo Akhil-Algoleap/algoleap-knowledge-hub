@@ -16,7 +16,7 @@ export function Logo({ className, size = 'md' }: LogoProps) {
   
   const green = '#3A7D44';
   const symbolCream = '#EEF2D1'; 
-  const strokeWidth = S * 0.08;
+  const strokeWidth = S * 0.10; // Extra thick stroke
 
   return (
     <svg
@@ -39,16 +39,15 @@ export function Logo({ className, size = 'md' }: LogoProps) {
       />
 
       {/* 
-        Symbol: Outlined triangle and SOLID bar.
-        Triangle is increased in size.
+        Symbol: MASSIVE Outlined triangle and SOLID wide bar.
       */}
       <g>
-        {/* Triangle outline - Larger size, Apex touching the bar */}
+        {/* Massive Triangle outline */}
         <path 
           d={`
-            M ${S * 0.16} ${S * 0.20}
-            L ${S * 0.64} ${S * 0.50}
-            L ${S * 0.16} ${S * 0.80}
+            M ${S * 0.08} ${S * 0.12}
+            L ${S * 0.62} ${S * 0.50}
+            L ${S * 0.08} ${S * 0.88}
             Z
           `} 
           fill="none"
@@ -58,12 +57,12 @@ export function Logo({ className, size = 'md' }: LogoProps) {
           strokeLinecap="round"
         />
         
-        {/* SOLID Vertical Bar - Touches triangle apex */}
+        {/* Wide SOLID Vertical Bar */}
         <rect 
-          x={S * 0.64}
-          y={S * 0.20}
-          width={S * 0.18}
-          height={S * 0.60}
+          x={S * 0.62}
+          y={S * 0.12}
+          width={S * 0.22}
+          height={S * 0.76}
           rx={S * 0.04}
           fill={symbolCream}
         />
