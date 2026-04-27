@@ -9,11 +9,14 @@ interface LogoProps {
 
 export function Logo({ className, size = 'md' }: LogoProps) {
   const iconSize = size === 'sm' ? 28 : size === 'lg' ? 44 : 36;
-  const fontSize = iconSize * 0.8;
+  const fontSize = iconSize * 0.80;
   const gap = iconSize * 0.35;
   const textWidth = fontSize * 4.6;
   const totalWidth = iconSize + gap + textWidth;
   const h = iconSize;
+
+  // Symbol fill: light lime-green/cream matching reference image
+  const symbolColor = '#C5E09A';
 
   return (
     <svg
@@ -24,36 +27,35 @@ export function Logo({ className, size = 'md' }: LogoProps) {
       className={cn('select-none flex-shrink-0', className)}
       aria-label="Algoleap"
     >
-      {/* === ICON: Green rounded square === */}
+      {/* Green rounded square - more rounded corners like image 1 */}
       <rect
         x="0" y="0"
         width={iconSize} height={iconSize}
-        rx={iconSize * 0.20} ry={iconSize * 0.20}
+        rx={iconSize * 0.24} ry={iconSize * 0.24}
         fill="#3A7D44"
       />
 
-      {/* === ICON: Cream skip-forward symbol === */}
-      {/* Left "D" shape: a filled rounded-right shape */}
-      {/* Triangle pointing right (play) */}
+      {/* Large play triangle - fills most of the icon like image 1 */}
       <polygon
         points={`
-          ${iconSize * 0.22},${iconSize * 0.24}
-          ${iconSize * 0.60},${iconSize * 0.50}
-          ${iconSize * 0.22},${iconSize * 0.76}
+          ${iconSize * 0.15},${iconSize * 0.18}
+          ${iconSize * 0.63},${iconSize * 0.50}
+          ${iconSize * 0.15},${iconSize * 0.82}
         `}
-        fill="#D8E8C8"
-      />
-      {/* Vertical bar on the right of the triangle */}
-      <rect
-        x={iconSize * 0.62}
-        y={iconSize * 0.24}
-        width={iconSize * 0.115}
-        height={iconSize * 0.52}
-        rx={iconSize * 0.025}
-        fill="#D8E8C8"
+        fill={symbolColor}
       />
 
-      {/* === TEXT: algoleap === */}
+      {/* Thick vertical bar on the right */}
+      <rect
+        x={iconSize * 0.66}
+        y={iconSize * 0.18}
+        width={iconSize * 0.16}
+        height={iconSize * 0.64}
+        rx={iconSize * 0.03}
+        fill={symbolColor}
+      />
+
+      {/* algoleap text */}
       <text
         x={iconSize + gap}
         y={h * 0.755}
