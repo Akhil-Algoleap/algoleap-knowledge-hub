@@ -15,7 +15,8 @@ export function Logo({ className, size = 'md' }: LogoProps) {
   const totalWidth = S + gap + textWidth;
   
   const green = '#3A7D44';
-  const symbolCream = '#EEF2D1'; // The cream/light-lime color from image 2
+  const symbolCream = '#EEF2D1'; // The cream/light-lime color
+  const strokeWidth = S * 0.08; // Thick stroke for the double-border effect
 
   return (
     <svg
@@ -26,7 +27,7 @@ export function Logo({ className, size = 'md' }: LogoProps) {
       className={cn('select-none flex-shrink-0', className)}
       aria-label="Algoleap"
     >
-      {/* Solid green square with very rounded corners (approx 28% radius) */}
+      {/* Solid green square */}
       <rect
         x="0"
         y="0"
@@ -37,28 +38,37 @@ export function Logo({ className, size = 'md' }: LogoProps) {
         fill={green}
       />
 
-      {/* Symbol: Triangle (Play) - slightly rounded tips */}
-      <path
-        d={`
-          M ${S * 0.24} ${S * 0.26}
-          L ${S * 0.60} ${S * 0.50}
-          L ${S * 0.24} ${S * 0.74}
+      {/* 
+        Symbol: Outlined triangle and bar connected.
+        The user wants the "double border" look filled with white/cream.
+        We achieve this by drawing a thick stroke with no fill.
+      */}
+      <g 
+        fill="none" 
+        stroke={symbolCream} 
+        strokeWidth={strokeWidth} 
+        strokeLinejoin="round" 
+        strokeLinecap="round"
+      >
+        {/* Triangle outline */}
+        <path d={`
+          M ${S * 0.22} ${S * 0.26}
+          L ${S * 0.58} ${S * 0.50}
+          L ${S * 0.22} ${S * 0.74}
           Z
-        `}
-        fill={symbolCream}
-      />
+        `} />
+        
+        {/* Vertical Bar outline - attached to triangle tip */}
+        <path d={`
+          M ${S * 0.62} ${S * 0.26}
+          L ${S * 0.74} ${S * 0.26}
+          L ${S * 0.74} ${S * 0.74}
+          L ${S * 0.62} ${S * 0.74}
+          Z
+        `} />
+      </g>
 
-      {/* Symbol: Vertical Bar - slightly rounded */}
-      <rect
-        x={S * 0.64}
-        y={S * 0.26}
-        width={S * 0.12}
-        height={S * 0.48}
-        rx={S * 0.03}
-        fill={symbolCream}
-      />
-
-      {/* algoleap text - Bold, green, tight tracking */}
+      {/* algoleap text */}
       <text
         x={S + gap}
         y={S * 0.76}
