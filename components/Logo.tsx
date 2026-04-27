@@ -27,7 +27,7 @@ export function Logo({ className, size = 'md' }: LogoProps) {
       className={cn('select-none flex-shrink-0', className)}
       aria-label="Algoleap"
     >
-      {/* Solid green square */}
+      {/* Solid green square with very rounded corners */}
       <rect
         x="0"
         y="0"
@@ -39,32 +39,34 @@ export function Logo({ className, size = 'md' }: LogoProps) {
       />
 
       {/* 
-        Symbol: Outlined triangle and bar connected.
-        We move the triangle tip (apex) so it touches the vertical bar exactly.
+        Symbol: Outlined triangle and SOLID bar.
+        Triangle is increased in size.
       */}
-      <g 
-        fill="none" 
-        stroke={symbolCream} 
-        strokeWidth={strokeWidth} 
-        strokeLinejoin="round" 
-        strokeLinecap="round"
-      >
-        {/* Triangle outline - Apex moved to S * 0.64 to touch the bar */}
-        <path d={`
-          M ${S * 0.22} ${S * 0.26}
-          L ${S * 0.64} ${S * 0.50}
-          L ${S * 0.22} ${S * 0.74}
-          Z
-        `} />
+      <g>
+        {/* Triangle outline - Larger size, Apex touching the bar */}
+        <path 
+          d={`
+            M ${S * 0.16} ${S * 0.20}
+            L ${S * 0.64} ${S * 0.50}
+            L ${S * 0.16} ${S * 0.80}
+            Z
+          `} 
+          fill="none"
+          stroke={symbolCream}
+          strokeWidth={strokeWidth}
+          strokeLinejoin="round"
+          strokeLinecap="round"
+        />
         
-        {/* Vertical Bar outline - Starts at S * 0.64 (touching triangle apex) */}
-        <path d={`
-          M ${S * 0.64} ${S * 0.26}
-          L ${S * 0.76} ${S * 0.26}
-          L ${S * 0.76} ${S * 0.74}
-          L ${S * 0.64} ${S * 0.74}
-          Z
-        `} />
+        {/* SOLID Vertical Bar - Touches triangle apex */}
+        <rect 
+          x={S * 0.64}
+          y={S * 0.20}
+          width={S * 0.18}
+          height={S * 0.60}
+          rx={S * 0.04}
+          fill={symbolCream}
+        />
       </g>
 
       {/* algoleap text */}
