@@ -31,13 +31,59 @@ export default function LoginPage() {
 
     try {
       if (authMode === 'admin') {
-        if (password !== '@Algoleap54321') throw new Error('Incorrect Admin Password');
+        const ADMIN_PASSWORD = '@Algoleap54321';
+        const EMPLOYEE_PASSWORD = '@AlgoleapEmployee2026';
+        const hardcodedAdmins = ['akhil.bommera@algoleap.com'];
+        const isHardcodedAdmin = hardcodedAdmins.includes(email);
+
+        if (password !== ADMIN_PASSWORD) throw new Error('Incorrect Admin Password');
         
         // Set perspective cookie
         document.cookie = `preferred_role=admin; path=/; max-age=3600; SameSite=Lax`;
         
-        const { error } = await supabase.auth.signInWithPassword({ email, password: '@Algoleap54321' });
-        if (error) throw error;
+        // 1. Try to Sign In with Admin Password
+        let { error: signInError } = await supabase.auth.signInWithPassword({ 
+          email, 
+          password: ADMIN_PASSWORD 
+        });
+
+        // 2. If it fails and is a hardcoded admin, try auto-signup or employee password fallback
+        if (signInError && signInError.message.includes('Invalid login credentials') && isHardcodedAdmin) {
+          // Try to sign up if account doesn't exist
+          const { error: signUpError } = await supabase.auth.signUp({
+            email,
+            password: ADMIN_PASSWORD
+          });
+
+          if (signUpError) {
+            // If user already exists (likely as employee), try to login with employee password
+            const { error: retryError } = await supabase.auth.signInWithPassword({
+              email,
+              password: EMPLOYEE_PASSWORD
+            });
+            if (retryError) throw retryError;
+          } else {
+            // SignUp successful, now sign in
+            const { error: retryError } = await supabase.auth.signInWithPassword({
+              email,
+              password: ADMIN_PASSWORD
+            });
+            if (retryError) throw retryError;
+          }
+        } else if (signInError) {
+          throw signInError;
+        }
+
+        // 3. Ensure profile exists and has admin role
+        const { data: { user } } = await supabase.auth.getUser();
+        if (user) {
+          await supabase.from('profiles').upsert({
+            id: user.id,
+            email: user.email,
+            role: 'admin'
+          }, { onConflict: 'id' });
+        }
+        
         window.location.href = '/';
       } else {
         // --- NEW SEAMLESS EMPLOYEE LOGIC ---
