@@ -9,14 +9,15 @@ interface LogoProps {
 
 export function Logo({ className, size = 'md' }: LogoProps) {
   const S = size === 'sm' ? 28 : size === 'lg' ? 44 : 36;
-  const fontSize = S * 0.78;
-  const gap = S * 0.32;
-  const textWidth = fontSize * 4.6;
+  // Increase font size slightly to match the pic better
+  const fontSize = S * 0.82;
+  const gap = S * 0.35;
+  const textWidth = fontSize * 4.4;
   const totalWidth = S + gap + textWidth;
   
   const green = '#3A7D44';
   const symbolCream = '#EEF2D1'; 
-  const strokeWidth = S * 0.10; // Extra thick stroke
+  const strokeWidth = S * 0.11; // Thicker border for the triangle
 
   return (
     <svg
@@ -40,14 +41,15 @@ export function Logo({ className, size = 'md' }: LogoProps) {
 
       {/* 
         Symbol: MASSIVE Outlined triangle and SOLID wide bar.
+        Triangle is expanded further to touch the edges more closely.
       */}
       <g>
-        {/* Massive Triangle outline */}
+        {/* Massive Triangle outline - Starts at 6% width, height from 10% to 90% */}
         <path 
           d={`
-            M ${S * 0.08} ${S * 0.12}
-            L ${S * 0.62} ${S * 0.50}
-            L ${S * 0.08} ${S * 0.88}
+            M ${S * 0.06} ${S * 0.10}
+            L ${S * 0.60} ${S * 0.50}
+            L ${S * 0.06} ${S * 0.90}
             Z
           `} 
           fill="none"
@@ -57,26 +59,32 @@ export function Logo({ className, size = 'md' }: LogoProps) {
           strokeLinecap="round"
         />
         
-        {/* Wide SOLID Vertical Bar */}
+        {/* SOLID Vertical Bar - Touches triangle apex exactly */}
         <rect 
-          x={S * 0.62}
-          y={S * 0.12}
-          width={S * 0.22}
-          height={S * 0.76}
-          rx={S * 0.04}
+          x={S * 0.60}
+          y={S * 0.10}
+          width={S * 0.24}
+          height={S * 0.80}
+          rx={S * 0.05}
           fill={symbolCream}
         />
       </g>
 
-      {/* algoleap text */}
+      {/* 
+        algoleap text - Using a more "Logo-accurate" alignment and font stack.
+        The user wants it to NOT look like generic "text format".
+        We tighten the tracking and use a rounded font stack.
+      */}
       <text
         x={S + gap}
-        y={S * 0.76}
-        fontFamily="'Inter', 'Segoe UI', Arial, sans-serif"
-        fontWeight="800"
+        y={S * 0.52}
+        dominantBaseline="middle"
+        fontFamily="'Outfit', 'Montserrat', 'Lexend', 'Segoe UI Variable', 'Segoe UI', Arial, sans-serif"
+        fontWeight="900"
         fontSize={fontSize}
         fill={green}
-        letterSpacing="-0.6"
+        letterSpacing="-1.2"
+        style={{ fontVariantLigatures: 'none' }}
       >
         algoleap
       </text>
