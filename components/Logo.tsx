@@ -4,17 +4,16 @@ import { cn } from '@/lib/utils';
 
 interface LogoProps {
   className?: string;
-  showText?: boolean;
   size?: 'sm' | 'md' | 'lg';
 }
 
-export function Logo({ className, showText = true, size = 'md' }: LogoProps) {
-  const heights: Record<string, number> = { sm: 28, md: 36, lg: 48 };
-  const h = heights[size];
-  const iconSize = h;
-  const fontSize = h * 0.78;
-  const gap = h * 0.3;
-  const totalWidth = iconSize + gap + fontSize * 4.8; // approx text width
+export function Logo({ className, size = 'md' }: LogoProps) {
+  const iconSize = size === 'sm' ? 28 : size === 'lg' ? 44 : 36;
+  const fontSize = iconSize * 0.8;
+  const gap = iconSize * 0.35;
+  const textWidth = fontSize * 4.6;
+  const totalWidth = iconSize + gap + textWidth;
+  const h = iconSize;
 
   return (
     <svg
@@ -25,46 +24,44 @@ export function Logo({ className, showText = true, size = 'md' }: LogoProps) {
       className={cn('select-none flex-shrink-0', className)}
       aria-label="Algoleap"
     >
-      {/* Green rounded square background */}
+      {/* === ICON: Green rounded square === */}
       <rect
-        x="0"
-        y="0"
-        width={iconSize}
-        height={iconSize}
-        rx={iconSize * 0.22}
-        ry={iconSize * 0.22}
+        x="0" y="0"
+        width={iconSize} height={iconSize}
+        rx={iconSize * 0.20} ry={iconSize * 0.20}
         fill="#3A7D44"
       />
 
-      {/* White play/next icon inside the square */}
-      {/* Triangle (play button) */}
+      {/* === ICON: Cream skip-forward symbol === */}
+      {/* Left "D" shape: a filled rounded-right shape */}
+      {/* Triangle pointing right (play) */}
       <polygon
         points={`
-          ${iconSize * 0.26},${iconSize * 0.27}
-          ${iconSize * 0.62},${iconSize * 0.50}
-          ${iconSize * 0.26},${iconSize * 0.73}
+          ${iconSize * 0.22},${iconSize * 0.24}
+          ${iconSize * 0.60},${iconSize * 0.50}
+          ${iconSize * 0.22},${iconSize * 0.76}
         `}
-        fill="#EEF0DC"
+        fill="#D8E8C8"
       />
-      {/* Vertical bar (skip line) */}
+      {/* Vertical bar on the right of the triangle */}
       <rect
-        x={iconSize * 0.65}
-        y={iconSize * 0.27}
-        width={iconSize * 0.09}
-        height={iconSize * 0.46}
-        rx={iconSize * 0.02}
-        fill="#EEF0DC"
+        x={iconSize * 0.62}
+        y={iconSize * 0.24}
+        width={iconSize * 0.115}
+        height={iconSize * 0.52}
+        rx={iconSize * 0.025}
+        fill="#D8E8C8"
       />
 
-      {/* "algoleap" text */}
+      {/* === TEXT: algoleap === */}
       <text
         x={iconSize + gap}
-        y={h * 0.77}
+        y={h * 0.755}
         fontFamily="'Segoe UI', 'Inter', 'Helvetica Neue', Arial, sans-serif"
-        fontWeight="700"
+        fontWeight="800"
         fontSize={fontSize}
         fill="#3A7D44"
-        letterSpacing="-0.5"
+        letterSpacing="-0.8"
       >
         algoleap
       </text>
