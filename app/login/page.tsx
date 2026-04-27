@@ -107,7 +107,7 @@ export default function LoginPage() {
           password: password
         });
 
-        // 4. Auto-Sign Up with the provided password if they don't exist yet
+        // 4. Auto-Sign Up or Migration from old shared password
         if (signInError && signInError.message.includes('Invalid login credentials')) {
           const { error: signUpError } = await supabase.auth.signUp({
             email,
@@ -115,19 +115,34 @@ export default function LoginPage() {
           });
           
           if (signUpError) {
-            // If user already exists, it means the password was just wrong
+            // If user already exists, they might be using the old shared password from the previous version
             if (signUpError.message.includes('User already registered')) {
-              throw new Error('Incorrect password for this account.');
+              const OLD_SHARED_PASSWORD = '@AlgoleapEmployee2026';
+              const { error: migrationError } = await supabase.auth.signInWithPassword({
+                email,
+                password: OLD_SHARED_PASSWORD
+              });
+
+              if (!migrationError) {
+                // Successfully logged in with old password, now 'claim' it by updating to the new password
+                await supabase.auth.updateUser({ password: password });
+              } else {
+                throw new Error('Incorrect password for this account.');
+              }
+            } else {
+              throw signUpError;
             }
-            throw signUpError;
+          } else {
+            // Sign in after signup (if not automatically signed in)
+            const { data: { session } } = await supabase.auth.getSession();
+            if (!session) {
+              const { error: retryError } = await supabase.auth.signInWithPassword({
+                email,
+                password: password
+              });
+              if (retryError) throw retryError;
+            }
           }
-          
-          // Sign in after signup
-          const { error: retryError } = await supabase.auth.signInWithPassword({
-            email,
-            password: password
-          });
-          if (retryError) throw retryError;
         } else if (signInError) {
           throw signInError;
         }
