@@ -86,10 +86,7 @@ export default function LoginPage() {
         
         window.location.href = '/';
       } else {
-        // --- NEW SEAMLESS EMPLOYEE LOGIC ---
-        const VIEWER_PASSWORD = '@Algoleap2026';
-        if (password !== VIEWER_PASSWORD) throw new Error('Incorrect Access Password');
-
+        // --- EMPLOYEE LOGIC ---
         // 1. Verify if the email is in our whitelist table
         const { data: whitelist, error: whitelistError } = await supabase
           .from('employees')
@@ -104,27 +101,31 @@ export default function LoginPage() {
         // 2. Set perspective cookie
         document.cookie = `preferred_role=viewer; path=/; max-age=3600; SameSite=Lax`;
 
-        const SHARED_PASSWORD = '@AlgoleapEmployee2026';
-
-        // 3. Try to Sign In with the shared password
+        // 3. Try to Sign In with the user's password
         let { error: signInError } = await supabase.auth.signInWithPassword({
           email,
-          password: SHARED_PASSWORD
+          password: password
         });
 
-        // 4. If user doesn't exist yet, Auto-Sign Up (this works because "Confirm Email" is OFF in Supabase)
+        // 4. Auto-Sign Up with the provided password if they don't exist yet
         if (signInError && signInError.message.includes('Invalid login credentials')) {
           const { error: signUpError } = await supabase.auth.signUp({
             email,
-            password: SHARED_PASSWORD
+            password: password
           });
           
-          if (signUpError) throw signUpError;
+          if (signUpError) {
+            // If user already exists, it means the password was just wrong
+            if (signUpError.message.includes('User already registered')) {
+              throw new Error('Incorrect password for this account.');
+            }
+            throw signUpError;
+          }
           
-          // Try signing in again after signup
+          // Sign in after signup
           const { error: retryError } = await supabase.auth.signInWithPassword({
             email,
-            password: SHARED_PASSWORD
+            password: password
           });
           if (retryError) throw retryError;
         } else if (signInError) {
@@ -206,7 +207,7 @@ export default function LoginPage() {
 
                 <div className="space-y-2 animate-in fade-in slide-in-from-top-2 duration-400">
                   <label className="text-[11px] font-bold text-gray-400 uppercase tracking-[0.2em] px-1 blur-[0.2px]">
-                    {authMode === 'admin' ? 'Admin Password' : 'Access Password'}
+                    {authMode === 'admin' ? 'Admin Password' : 'Your Password'}
                   </label>
                   <input 
                     type="password"
@@ -216,6 +217,11 @@ export default function LoginPage() {
                     placeholder="••••••••"
                     className="w-full bg-white border border-gray-200 rounded-2xl px-5 py-4 text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-[#3A7D44]/10 focus:border-[#3A7D44] transition-all"
                   />
+                  {authMode === 'employee' && (
+                    <p className="text-[10px] text-gray-500 px-1 mt-1 italic">
+                      First time? The password you enter now will be your new password.
+                    </p>
+                  )}
                 </div>
               </>
             ) : (
