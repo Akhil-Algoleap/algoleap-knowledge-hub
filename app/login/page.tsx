@@ -47,8 +47,8 @@ export default function LoginPage() {
           password: ADMIN_PASSWORD 
         });
 
-        // 2. If it fails and is a hardcoded admin, try auto-signup or employee password fallback
-        if (signInError && signInError.message.includes('Invalid login credentials') && isHardcodedAdmin) {
+        // 2. If it fails, try auto-signup or employee password fallback
+        if (signInError && signInError.message.includes('Invalid login credentials')) {
           // Try to sign up if account doesn't exist
           const { error: signUpError } = await supabase.auth.signUp({
             email,
