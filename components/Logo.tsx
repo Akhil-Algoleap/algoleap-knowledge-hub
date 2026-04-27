@@ -15,8 +15,8 @@ export function Logo({ className, size = 'md' }: LogoProps) {
   const totalWidth = S + gap + textWidth;
   
   const green = '#3A7D44';
-  const symbolCream = '#EEF2D1'; // The cream/light-lime color
-  const strokeWidth = S * 0.08; // Thick stroke for the double-border effect
+  const symbolCream = '#EEF2D1'; 
+  const strokeWidth = S * 0.08;
 
   return (
     <svg
@@ -40,8 +40,7 @@ export function Logo({ className, size = 'md' }: LogoProps) {
 
       {/* 
         Symbol: Outlined triangle and bar connected.
-        The user wants the "double border" look filled with white/cream.
-        We achieve this by drawing a thick stroke with no fill.
+        We move the triangle tip (apex) so it touches the vertical bar exactly.
       */}
       <g 
         fill="none" 
@@ -50,20 +49,20 @@ export function Logo({ className, size = 'md' }: LogoProps) {
         strokeLinejoin="round" 
         strokeLinecap="round"
       >
-        {/* Triangle outline */}
+        {/* Triangle outline - Apex moved to S * 0.64 to touch the bar */}
         <path d={`
           M ${S * 0.22} ${S * 0.26}
-          L ${S * 0.58} ${S * 0.50}
+          L ${S * 0.64} ${S * 0.50}
           L ${S * 0.22} ${S * 0.74}
           Z
         `} />
         
-        {/* Vertical Bar outline - attached to triangle tip */}
+        {/* Vertical Bar outline - Starts at S * 0.64 (touching triangle apex) */}
         <path d={`
-          M ${S * 0.62} ${S * 0.26}
-          L ${S * 0.74} ${S * 0.26}
-          L ${S * 0.74} ${S * 0.74}
-          L ${S * 0.62} ${S * 0.74}
+          M ${S * 0.64} ${S * 0.26}
+          L ${S * 0.76} ${S * 0.26}
+          L ${S * 0.76} ${S * 0.74}
+          L ${S * 0.64} ${S * 0.74}
           Z
         `} />
       </g>
