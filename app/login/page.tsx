@@ -87,6 +87,9 @@ export default function LoginPage() {
         window.location.href = '/';
       } else {
         // --- NEW SEAMLESS EMPLOYEE LOGIC ---
+        const VIEWER_PASSWORD = '@Algoleap2026';
+        if (password !== VIEWER_PASSWORD) throw new Error('Incorrect Access Password');
+
         // 1. Verify if the email is in our whitelist table
         const { data: whitelist, error: whitelistError } = await supabase
           .from('employees')
@@ -201,21 +204,19 @@ export default function LoginPage() {
                   />
                 </div>
 
-                {authMode === 'admin' && (
-                  <div className="space-y-2 animate-in fade-in slide-in-from-top-2 duration-400">
-                    <label className="text-[11px] font-bold text-gray-400 uppercase tracking-[0.2em] px-1 blur-[0.2px]">
-                      Password
-                    </label>
-                    <input 
-                      type="password"
-                      required
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
-                      placeholder="••••••••"
-                      className="w-full bg-white border border-gray-200 rounded-2xl px-5 py-4 text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-[#3A7D44]/10 focus:border-[#3A7D44] transition-all"
-                    />
-                  </div>
-                )}
+                <div className="space-y-2 animate-in fade-in slide-in-from-top-2 duration-400">
+                  <label className="text-[11px] font-bold text-gray-400 uppercase tracking-[0.2em] px-1 blur-[0.2px]">
+                    {authMode === 'admin' ? 'Admin Password' : 'Access Password'}
+                  </label>
+                  <input 
+                    type="password"
+                    required
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    placeholder="••••••••"
+                    className="w-full bg-white border border-gray-200 rounded-2xl px-5 py-4 text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-[#3A7D44]/10 focus:border-[#3A7D44] transition-all"
+                  />
+                </div>
               </>
             ) : (
               <div className="space-y-4 animate-in zoom-in-95 duration-500">
