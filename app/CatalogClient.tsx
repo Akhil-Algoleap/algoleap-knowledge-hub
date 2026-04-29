@@ -90,11 +90,9 @@ export function CatalogClient({ initialArtifacts, isAdmin }: { initialArtifacts:
   return (
     <div className="flex flex-col min-h-screen">
       {/* Top Header */}
-      <header className="bg-white border-b border-gray-200 py-4 px-6 flex justify-between items-center w-full shadow-sm sticky top-0 z-40">
-        <div className="flex items-center gap-4">
-          <Logo className="h-8" />
-          <div className="h-6 w-px bg-gray-200 mx-1 hidden sm:block"></div>
-          <span className="font-bold text-gray-800 text-[16px] hidden sm:block tracking-tight">Knowledge Hub</span>
+      <header className="bg-white border-b border-gray-200 py-3 px-6 flex justify-between items-center w-full shadow-sm sticky top-0 z-40">
+        <div className="flex items-center">
+          <img src="/new-logo.png" alt="Algoleap" className="h-10 object-contain" onError={(e) => { e.currentTarget.src = '/logo.png'; }} />
         </div>
         <div className="flex items-center gap-3">
           {isAdmin && (

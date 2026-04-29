@@ -50,7 +50,7 @@ export function AdminTable({ initialArtifacts }: { initialArtifacts: Artifact[] 
       <div className="glass-card overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-left text-sm whitespace-nowrap">
-            <thead className="bg-black/40 border-b border-white/10 uppercase text-xs font-semibold text-algoleap-muted tracking-wider">
+            <thead className="bg-gray-50 border-b border-gray-200 uppercase text-xs font-semibold text-gray-500 tracking-wider">
               <tr>
                 <th className="px-6 py-4">Title</th>
                 <th className="px-6 py-4">Type</th>
@@ -60,21 +60,21 @@ export function AdminTable({ initialArtifacts }: { initialArtifacts: Artifact[] 
                 <th className="px-6 py-4 text-right">Actions</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-white/5">
+            <tbody className="divide-y divide-gray-100">
               {artifacts.map(item => (
-                <tr key={item.id} className={`hover:bg-white/5 transition-colors ${item.status === 'archived' ? 'opacity-50 grayscale' : ''}`}>
+                <tr key={item.id} className={`hover:bg-gray-50 transition-colors ${item.status === 'archived' ? 'opacity-50 grayscale' : ''}`}>
                   <td className="px-6 py-4">
-                    <div className="font-medium text-white max-w-[300px] truncate">{item.title}</div>
+                    <div className="font-medium text-gray-900 max-w-[300px] truncate">{item.title}</div>
                     <div className="text-xs text-algoleap-muted mt-0.5">{item.owner_name}</div>
                   </td>
                   <td className="px-6 py-4 text-algoleap-muted">{item.artifact_type}</td>
                   <td className="px-6 py-4 text-algoleap-muted">
                     <div className="flex flex-wrap gap-1">
                       {item.service_line?.slice(0, 2).map((sl, i) => (
-                        <span key={i} className="px-1.5 py-0.5 rounded bg-white/10 text-xs truncate max-w-[150px]">{sl}</span>
+                        <span key={i} className="px-1.5 py-0.5 rounded bg-gray-100 text-gray-600 text-xs truncate max-w-[150px]">{sl}</span>
                       ))}
                       {item.service_line?.length > 2 && (
-                        <span className="px-1.5 py-0.5 rounded bg-white/10 text-xs">+{item.service_line.length - 2}</span>
+                        <span className="px-1.5 py-0.5 rounded bg-gray-100 text-gray-600 text-xs">+{item.service_line.length - 2}</span>
                       )}
                     </div>
                   </td>

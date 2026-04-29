@@ -26,7 +26,21 @@ export interface Profile {
 
 export interface Employee {
   id: string;
-  name: string;
-  email: string;
-  created_at: string;
+  s_no?: number;
+  joining_date?: string;
+  employee_id?: string;
+  employee_name: string;
+  designation?: string;
+  department?: string;
+  reporting_manager?: string;
+  client?: string;
+  work_place?: string;
+  email_id: string;
+  contact_number?: string;
+  laptop_serial_no?: string;
+  status?: string;
+  skills?: string;
+  role?: string;
+  practice?: string;
+  created_at?: string;
 }

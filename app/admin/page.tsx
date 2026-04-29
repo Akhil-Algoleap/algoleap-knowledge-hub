@@ -40,30 +40,30 @@ export default async function AdminPage() {
   }
 
   return (
-    <main className="min-h-screen bg-algoleap-dark pt-10 pb-20">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        
-        <header className="mb-8 border-b border-white/10 pb-6">
-          <Link href="/" className="inline-flex items-center gap-2 text-algoleap-green hover:text-algoleap-green-hover mb-4 transition-colors font-medium text-sm">
+    <main className="min-h-screen bg-slate-50">
+      <header className="bg-white border-b border-gray-200 py-4 px-6 mb-8 shadow-sm">
+        <div className="max-w-[1600px] mx-auto flex flex-col">
+          <Link href="/" className="inline-flex items-center gap-2 text-gray-500 hover:text-algoleap-green mb-4 transition-colors font-medium text-sm">
             <ArrowLeft className="h-4 w-4" /> Back to Catalog
           </Link>
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-6">
-              <Logo className="h-10" />
-              <div className="h-10 w-px bg-white/10 hidden sm:block"></div>
+              <Logo size="xl" />
+              <div className="h-10 w-px bg-gray-200 hidden sm:block"></div>
               <div>
-                <h1 className="text-3xl font-bold text-white tracking-tight">Admin Console</h1>
-                <p className="text-algoleap-muted mt-1">Manage knowledge hub assets and metadata.</p>
+                <h1 className="text-2xl font-bold text-gray-900 tracking-tight">Admin Console</h1>
+                <p className="text-gray-500 text-sm mt-0.5">Manage knowledge hub assets and metadata.</p>
               </div>
             </div>
-            <Link href="/admin/employees" className="flex items-center gap-2 bg-white/5 hover:bg-white/10 text-white px-4 py-2 rounded-lg border border-white/10 transition-all font-medium text-sm">
+            <Link href="/admin/employees" className="flex items-center gap-2 bg-gray-50 hover:bg-gray-100 text-gray-700 px-4 py-2 rounded-lg border border-gray-200 transition-all font-medium text-sm shadow-sm">
               <ShieldCheck className="h-4 w-4 text-algoleap-green" /> Manage Access
             </Link>
           </div>
-        </header>
+        </div>
+      </header>
 
+      <div className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 pb-20">
         <AdminTable initialArtifacts={artifacts ?? []} />
-
       </div>
     </main>
   );

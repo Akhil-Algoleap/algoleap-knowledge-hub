@@ -31,15 +31,15 @@ export function EmployeeTable({ initialEmployees }: { initialEmployees: Employee
   };
 
   const filteredEmployees = employees.filter(emp => 
-    emp.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
-    emp.email.toLowerCase().includes(searchQuery.toLowerCase())
+    emp.employee_name.toLowerCase().includes(searchQuery.toLowerCase()) || 
+    emp.email_id.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   return (
     <div>
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
         <div>
-          <h2 className="text-xl font-bold text-white">Employee Management</h2>
+          <h2 className="text-xl font-bold text-gray-900">Employee Management</h2>
           <p className="text-algoleap-muted text-sm mt-1">Only users in this list can access the platform.</p>
         </div>
         
@@ -51,7 +51,7 @@ export function EmployeeTable({ initialEmployees }: { initialEmployees: Employee
               placeholder="Search employees..." 
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full bg-white/5 border border-white/10 rounded-lg pl-10 pr-4 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-algoleap-green/20 focus:border-algoleap-green transition-all"
+              className="w-full bg-white border border-gray-300 rounded-lg pl-10 pr-4 py-2 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-algoleap-green/20 focus:border-algoleap-green transition-all"
             />
           </div>
           <button 
@@ -66,26 +66,39 @@ export function EmployeeTable({ initialEmployees }: { initialEmployees: Employee
       <div className="glass-card overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-left text-sm whitespace-nowrap">
-            <thead className="bg-black/40 border-b border-white/10 uppercase text-xs font-semibold text-algoleap-muted tracking-wider">
+            <thead className="bg-gray-50 border-b border-gray-200 uppercase text-xs font-semibold text-gray-500 tracking-wider">
               <tr>
                 <th className="px-6 py-4">Employee</th>
-                <th className="px-6 py-4">Email</th>
+                <th className="px-6 py-4">Role</th>
+                <th className="px-6 py-4">Practice</th>
                 <th className="px-6 py-4">Added On</th>
                 <th className="px-6 py-4 text-right">Actions</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-white/5">
+            <tbody className="divide-y divide-gray-100">
               {filteredEmployees.map(emp => (
-                <tr key={emp.id} className="hover:bg-white/5 transition-colors">
+                <tr key={emp.id} className="hover:bg-gray-50 transition-colors">
                   <td className="px-6 py-4">
-                    <div className="flex items-center gap-3">
-                      <div className="h-8 w-8 rounded-full bg-algoleap-green/10 flex items-center justify-center text-algoleap-green">
-                        <User className="h-4 w-4" />
-                      </div>
-                      <div className="font-medium text-white">{emp.name}</div>
+                    <div className="flex flex-col">
+                      <span className="font-medium text-gray-900">{emp.employee_name}</span>
+                      <span className="text-xs text-algoleap-muted">{emp.email_id}</span>
                     </div>
                   </td>
-                  <td className="px-6 py-4 text-algoleap-muted">{emp.email}</td>
+                  <td className="px-6 py-4">
+                    {emp.role ? (
+                      <span className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium 
+                        ${emp.role === 'Client Manager' ? 'bg-green-100 text-green-800' :
+                        emp.role === 'Practice Leader' ? 'bg-yellow-100 text-yellow-800' :
+                        emp.role === 'Administrator' ? 'bg-purple-100 text-purple-800' :
+                        emp.role === 'Team Member' ? 'bg-blue-100 text-blue-800' :
+                        'bg-gray-100 text-gray-800'}`}>
+                        {emp.role}
+                      </span>
+                    ) : (
+                      <span className="text-gray-500 italic text-xs">Unassigned</span>
+                    )}
+                  </td>
+                  <td className="px-6 py-4 text-algoleap-muted">{emp.practice || '---'}</td>
                   <td className="px-6 py-4 text-algoleap-muted" suppressHydrationWarning>
                     {new Date(emp.created_at).toLocaleDateString()}
                   </td>

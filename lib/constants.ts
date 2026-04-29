@@ -1,6 +1,15 @@
 export const ARTIFACT_TYPES = [
-  'Pitch Deck', 'Demo Video', 'Case Study',
-  'Architecture Doc', 'Template', 'Process Doc', 'Training Material'
+  'Capability deck', 'Demo Video', 'Client Documents'
+] as const
+
+export const ROLES = [
+  'Client Manager', 'Practice Leader', 'Executive', 
+  'Team Member', 'Administrator'
+] as const
+
+export const PRACTICES = [
+  'Service Management', 'AI & Automation', 
+  'Product Engineering', '---'
 ] as const
 
 export const SERVICE_LINES = [
